@@ -12,6 +12,9 @@ public class TilemapDamage : MonoBehaviour, IFireExposable
 
 	private Matrix matrix;
 
+	//Is set to 10 as there isn't any tiles which go through 10 stages of damage, change if there is at some point.
+	private const int maxOverflowProtection = 10;
+
 	private void Awake()
 	{
 		tileChangeManager = transform.GetComponentInParent<TileChangeManager>();
@@ -82,9 +85,13 @@ public class TilemapDamage : MonoBehaviour, IFireExposable
 
 		data.AddTileDamage(Layer.LayerType, damageTaken);
 
-		if(basicTile.SoundOnHit.AssetAddress != null)
-			SoundManager.PlayNetworkedAtPos(basicTile.SoundOnHit, worldPosition);
-		else{
+		if(basicTile.SoundOnHit != null && !string.IsNullOrEmpty(basicTile.SoundOnHit.AssetAddress) && basicTile.SoundOnHit.AssetAddress != "null")
+		{
+			if(damage >= 1)
+				SoundManager.PlayNetworkedAtPos(basicTile.SoundOnHit, worldPosition);
+		}
+		else
+		{
 			Logger.LogError($"Tried to play SoundOnHit for {basicTile.DisplayName}, but it was null!", Category.Addressables);
 		}
 
@@ -103,8 +110,12 @@ public class TilemapDamage : MonoBehaviour, IFireExposable
 				var damageLeft = totalDamageTaken - basicTile.MaxHealth;
 				var tile = basicTile.ToTileWhenDestroyed as BasicTile;
 
+				var overFlowProtection = 0;
+
 				while (damageLeft > 0 && tile != null)
 				{
+					overFlowProtection++;
+
 					if (tile.MaxHealth <= damageLeft)
 					{
 						damageLeft -= tile.MaxHealth;
@@ -115,6 +126,12 @@ public class TilemapDamage : MonoBehaviour, IFireExposable
 						//Atm we just set remaining damage to 0, instead of absorbing it for the new tile
 						damageLeft = 0;
 						tileChangeManager.UpdateTile(data.Position, tile);
+						break;
+					}
+
+					if (overFlowProtection > maxOverflowProtection)
+					{
+						Debug.LogError($"Overflow protection triggered on {basicTile.name}, theres a loop in the ToTileWhenDestroyed");
 						break;
 					}
 				}
@@ -150,6 +167,11 @@ public class TilemapDamage : MonoBehaviour, IFireExposable
 		if (basicTile.MaxHealth < basicTile.MaxHealth - totalDamageTaken)
 		{
 			data.ResetDamage(Layer.LayerType);
+		}
+
+		if (damageTaken > totalDamageTaken){
+			Logger.LogError($"Applying damage to {basicTile.DisplayName} increased the damage to be dealt, when it should have decreased!", Category.TileMaps);
+			return totalDamageTaken;
 		}
 
 		//Return how much damage is left
