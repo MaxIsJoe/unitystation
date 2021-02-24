@@ -63,11 +63,11 @@ namespace CameraEffects
 		}
 
 		/// <summary>
-		/// Updates the size of the dim light around the player that allows him to see themselves in the dark.
-		/// </summary>
-		public void AdjustPlayerVisibility(Vector3 newSize, float time)
+        /// Updates the size of the dim light around the player that allows him to see themselves in the dark.
+        /// </summary>
+		public void AdjustPlayerVisibility(Vector3 newSize)
 		{
-			LeanTween.scale(minimalVisibilitySprite, newSize, time);
+			minimalVisibilitySprite.transform.localScale = newSize;
 		}
 	}
 }
