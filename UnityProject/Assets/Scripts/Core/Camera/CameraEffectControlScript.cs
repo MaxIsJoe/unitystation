@@ -12,9 +12,6 @@ namespace CameraEffects
 		public GlitchEffect glitchEffect;
 		public NightVisionCamera nightVisionCamera;
 
-		[SerializeField]
-		private GameObject minimalVisibilitySprite;
-
 		private const float TIMER_INTERVAL = 1f;
 		private int drunkCameraTime = 0;
 
@@ -60,14 +57,6 @@ namespace CameraEffects
 				drunkCamera.enabled = false;
 				UpdateManager.Remove(CallbackType.PERIODIC_UPDATE, DoEffectTimeCheck);
 			}
-		}
-
-		/// <summary>
-        /// Updates the size of the dim light around the player that allows him to see themselves in the dark.
-        /// </summary>
-		public void AdjustPlayerVisibility(Vector3 newSize)
-		{
-			minimalVisibilitySprite.transform.localScale = newSize;
 		}
 	}
 }
