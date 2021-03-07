@@ -1,11 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+<<<<<<< HEAD
+using CameraEffects;
+
+public class NightVisionGoggles : MonoBehaviour, IServerInventoryMove
+=======
 using Mirror;
 using CameraEffects;
 using UI.Action;
 
 public class NightVisionGoggles : NetworkBehaviour, IServerInventoryMove, ICheckedInteractable<HandActivate>
+>>>>>>> 99cb8b9
 {
 	[SerializeField, Tooltip("How far the player will be able to see in the dark while he has the goggles on.")]
 	private Vector3 nightVisionVisibility;
@@ -13,6 +19,47 @@ public class NightVisionGoggles : NetworkBehaviour, IServerInventoryMove, ICheck
 	[SerializeField, Tooltip("The default minimal visibility size.")]
 	private Vector3 defaultVisionVisibility;
 
+<<<<<<< HEAD
+
+	public void OnInventoryMoveServer(InventoryMove info)
+		{
+			RegisterPlayer registerPlayer;
+
+			if (info.ToSlot != null && info.ToSlot?.NamedSlot != null)
+			{
+				registerPlayer = info.ToRootPlayer;
+
+				if (registerPlayer != null && info.ToSlot.NamedSlot == NamedSlot.eyes)
+				{
+					OnWearing();
+				}
+			}
+
+			if (info.FromSlot != null && info.FromSlot?.NamedSlot != null && info.ToSlot != null)
+			{
+				registerPlayer = info.FromRootPlayer;
+
+				if (registerPlayer != null && info.FromSlot.NamedSlot == NamedSlot.eyes)
+				{
+					OnTakingOff();
+				}
+			}
+		}
+	
+	private void OnTakingOff()
+		{
+			var camera = Camera.main;
+			camera.GetComponent<CameraEffectControlScript>().ToggleNightVisionEffectState();
+			camera.GetComponent<CameraEffectControlScript>().AdjustPlayerVisibility(defaultVisionVisibility);
+		}
+
+	private void OnWearing()
+		{
+			var camera = Camera.main;
+			camera.GetComponent<CameraEffectControlScript>().ToggleNightVisionEffectState();
+			camera.GetComponent<CameraEffectControlScript>().AdjustPlayerVisibility(nightVisionVisibility);
+		}
+=======
 	[SerializeField, Tooltip("How fast will the player gain visibility?")]
 	private float visibilityAnimationSpeed = 1.50f;
 
@@ -128,5 +175,6 @@ public class NightVisionGoggles : NetworkBehaviour, IServerInventoryMove, ICheck
 	{
 		if(isOn == true){enableEffect(true);}
 	}
+>>>>>>> 99cb8b9
 }
 
