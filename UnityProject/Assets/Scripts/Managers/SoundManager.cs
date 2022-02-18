@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using Audio.Containers;
+using Object = System.Object;
 
 /// <summary>
 /// Manager that allows to play sounds.

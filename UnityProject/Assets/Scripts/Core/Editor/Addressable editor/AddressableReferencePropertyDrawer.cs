@@ -4,11 +4,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
+using Core.Editor;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using Object = System.Object;
 
 [CustomPropertyDrawer(typeof(AddressableTexture))]
 [CustomPropertyDrawer(typeof(AddressableSprite))]
@@ -41,8 +45,25 @@ public class AddressableReferencePropertyDrawer : PropertyDrawer
 
 		}
 
+		if (GUILayout.Button("Play Audio") && stringpath != "Null")
+		{
+			PlayAudioClip(Path.stringValue);
+		}
+
 		GUILayout.EndHorizontal();
 		EditorGUI.EndProperty();
+	}
+
+	public static async void PlayAudioClip(string obj)
+	{
+		Debug.Log(obj);
+		var asset = new AddressableAudioSource();
+		asset.AssetAddress = obj;
+		await asset.Load();
+		Debug.Log(asset);
+		Debug.Log(asset.AudioSource);
+		Debug.Log(asset.IsReadyLoaded);
+		SoundInEditor.Play(asset.AudioSource);
 	}
 
 	public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
