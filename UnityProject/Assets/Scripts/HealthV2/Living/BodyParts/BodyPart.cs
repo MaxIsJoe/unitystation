@@ -170,6 +170,7 @@ namespace HealthV2
 			for (int i = OrganList.Count - 1; i >= 0; i--)
 			{
 				var organ = OrganList[i];
+				if(organ.RelatedPart.BloodContainer == null) continue;
 				organ.ImplantPeriodicUpdate();
 				if (IsBleedingInternally)
 				{

@@ -133,6 +133,7 @@ namespace HealthV2
 		public void BloodInitialise()
 		{
 			BloodContainer = this.GetComponent<ReagentContainerBody>();
+			if(BloodContainer == null) return;
 			if (BloodContainer.ContentsSet == false)
 			{
 				if (isBloodCirculated)
@@ -158,6 +159,7 @@ namespace HealthV2
 		/// </summary>
 		protected virtual void BloodUpdate()
 		{
+			if(BloodContainer == null) return;
 			if (isBloodCirculated == false) return;
 			ConsumeReagents();
 			if (CanGetHungry)

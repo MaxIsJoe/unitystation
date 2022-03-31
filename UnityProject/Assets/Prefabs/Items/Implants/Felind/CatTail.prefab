@@ -14,6 +14,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4990853901509658031, guid: b87ebcdea6fb0dd49b0fbcf1b308c159,
         type: 3}
+      propertyPath: BloodContainer
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4990853901509658031, guid: b87ebcdea6fb0dd49b0fbcf1b308c159,
+        type: 3}
       propertyPath: BodyTypesSprites.SpriteOrder.Orders.Array.data[2]
       value: 15
       objectReference: {fileID: 0}
@@ -103,5 +108,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CatTail
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1570538496271333660, guid: b87ebcdea6fb0dd49b0fbcf1b308c159, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b87ebcdea6fb0dd49b0fbcf1b308c159, type: 3}

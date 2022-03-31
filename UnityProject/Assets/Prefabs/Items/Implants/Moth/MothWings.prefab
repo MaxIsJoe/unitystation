@@ -20,6 +20,11 @@ PrefabInstance:
         type: 2}
     - target: {fileID: 5688082005075186663, guid: d243d9aff97ede04581d82563a576f0c,
         type: 3}
+      propertyPath: BloodContainer
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5688082005075186663, guid: d243d9aff97ede04581d82563a576f0c,
+        type: 3}
       propertyPath: DamageThreshold
       value: 21
       objectReference: {fileID: 0}
@@ -126,5 +131,6 @@ PrefabInstance:
       propertyPath: m_AssetId
       value: e10f9003b4cb0c74a9fd14df00f8eb55
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2195679833307180884, guid: d243d9aff97ede04581d82563a576f0c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d243d9aff97ede04581d82563a576f0c, type: 3}

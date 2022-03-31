@@ -129,6 +129,7 @@ namespace HealthV2
 				foreach (BodyPart implant in RelatedPart.HealthMaster.BodyPartList)
 				{
 					if (implant.IsBloodCirculated == false) continue;
+					if(implant.BloodContainer == null) continue;
 					implant.BloodPumpedEvent((implant.BloodThroughput / totalWantedBlood) * pumpedReagent);
 				}
 				if (RelatedPart.HealthMaster.IsDead) return; //For some reason the heart will randomly still continue to try and beat after death.

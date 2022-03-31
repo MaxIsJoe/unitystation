@@ -80,6 +80,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 2934630090728222927, guid: 719377fefb0114b448fc6ca9f7a5a6df,
         type: 3}
+      propertyPath: BloodContainer
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2934630090728222927, guid: 719377fefb0114b448fc6ca9f7a5a6df,
+        type: 3}
       propertyPath: CanBleedExternally
       value: 1
       objectReference: {fileID: 0}
@@ -138,4 +143,5 @@ PrefabInstance:
         type: 2}
     m_RemovedComponents:
     - {fileID: -1360619806965098635, guid: 719377fefb0114b448fc6ca9f7a5a6df, type: 3}
+    - {fileID: 8660802352657730684, guid: 719377fefb0114b448fc6ca9f7a5a6df, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 719377fefb0114b448fc6ca9f7a5a6df, type: 3}

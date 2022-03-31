@@ -100,6 +100,7 @@ MonoBehaviour:
   SubCatalogue: []
   PresentSpriteSet: {fileID: 11400000, guid: 99f4165295bd73141a6a20eb4c04ac78, type: 2}
   randomInitialSprite: 0
+  doReverseAnimation: 0
   pushTextureOnStartUp: 1
   initialVariantIndex: 0
   palette: []
@@ -199,6 +200,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 4140162561972674139, guid: b054a3a3b8b51b74ca3853fa734a304b,
         type: 3}
+      propertyPath: BloodContainer
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4140162561972674139, guid: b054a3a3b8b51b74ca3853fa734a304b,
+        type: 3}
       propertyPath: LobbyCustomisation
       value: 
       objectReference: {fileID: 2022988717833229478, guid: ebac86446b7884d4bb1c126ac3affbcf,
@@ -242,6 +248,7 @@ PrefabInstance:
         type: 2}
     m_RemovedComponents:
     - {fileID: 8452774118089609025, guid: b054a3a3b8b51b74ca3853fa734a304b, type: 3}
+    - {fileID: 7637102989191127784, guid: b054a3a3b8b51b74ca3853fa734a304b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b054a3a3b8b51b74ca3853fa734a304b, type: 3}
 --- !u!4 &7684471636725115939 stripped
 Transform:

@@ -9,6 +9,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1544594378003915950, guid: 2e6f2ff9beb985749940d242877d84f0,
         type: 3}
+      propertyPath: BloodContainer
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1544594378003915950, guid: 2e6f2ff9beb985749940d242877d84f0,
+        type: 3}
       propertyPath: CanBleedExternally
       value: 1
       objectReference: {fileID: 0}
@@ -130,5 +135,6 @@ PrefabInstance:
       propertyPath: foreverID
       value: 3f85725bdc354964b84b6c7f96cd0bf0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5037064224630773789, guid: 2e6f2ff9beb985749940d242877d84f0, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2e6f2ff9beb985749940d242877d84f0, type: 3}

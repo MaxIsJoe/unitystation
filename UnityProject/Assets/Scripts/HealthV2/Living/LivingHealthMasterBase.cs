@@ -467,6 +467,7 @@ namespace HealthV2
 			float toReturn = 0;
 			foreach (var implant in BodyPartList)
 			{
+				if(implant.BloodContainer == null) continue;
 				toReturn += implant.BloodContainer[CirculatorySystem.BloodType];
 			}
 
