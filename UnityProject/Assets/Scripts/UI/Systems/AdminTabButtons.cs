@@ -21,7 +21,7 @@ namespace UI.AdminTools
 		{
 			DisableAllGUI();
 		}
-
+		
 		public void BtnAdminPanel()
 		{
 			DisableAllGUI();

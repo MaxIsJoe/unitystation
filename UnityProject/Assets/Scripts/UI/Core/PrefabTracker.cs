@@ -27,7 +27,10 @@ namespace Util
 			set => foreverID = value;
 		}
 
+		public bool SpawnableInSandboxMode => spawnableInSandboxMode;
+
 		[SerializeField] private string foreverID;
+		[SerializeField] private bool spawnableInSandboxMode = true;
 
 		public void ReassignID() //Assuming it's a prefab Variant
 		{

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using Util;
 
 /// <summary>
 /// A document in our dev spawner search (lives in our Trie nodes), representing something spawnable. Currently only supports prefabs
@@ -19,10 +20,14 @@ public struct DevSpawnerDocument
 	/// </summary>
 	public readonly string SearchableName;
 
+	public readonly bool CanBeSpanwedInSandboxMode;
+
 	private DevSpawnerDocument(GameObject prefab)
 	{
 		Prefab = prefab;
 		SearchableName = SpawnerSearch.Standardize(prefab.name);
+		var tracker = prefab.GetComponent<PrefabTracker>();
+		CanBeSpanwedInSandboxMode = tracker == null ? true : tracker.SpawnableInSandboxMode;
 	}
 
 	/// <summary>
