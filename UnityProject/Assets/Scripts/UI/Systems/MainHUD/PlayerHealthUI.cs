@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using HealthV2;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -80,10 +81,7 @@ public class PlayerHealthUI : MonoBehaviour
 
 	void UpdateMe()
 	{
-		if (PlayerManager.LocalPlayerObject == null)
-		{
-			return;
-		}
+		if (PlayerManager.LocalPlayerObject == null) return;
 
 		if (PlayerManager.LocalPlayerScript.IsNormal == false)
 		{
@@ -96,10 +94,7 @@ public class PlayerHealthUI : MonoBehaviour
 		}
 
 
-		if (PlayerManager.LocalPlayerScript.IsNormal && !humanUI)
-		{
-			EnableAlwaysVisible();
-		}
+		if (PlayerManager.LocalPlayerScript.IsNormal && !humanUI) EnableAlwaysVisible();
 
 		float temperature = PlayerManager.LocalPlayerScript.playerHealth.RespiratorySystem.Temperature;
 		float pressure = PlayerManager.LocalPlayerScript.playerHealth.RespiratorySystem.Pressure;
@@ -123,7 +118,7 @@ public class PlayerHealthUI : MonoBehaviour
 		}
 
 
-		if (temperature > 260 && temperature < 360)
+		if (temperature.IsBetween(260, 360))
 		{
 			SetSpecificVisibility(false, temperatureAlert.gameObject);
 		}
@@ -133,7 +128,7 @@ public class PlayerHealthUI : MonoBehaviour
 			temperatureAlert.SetTemperatureSprite(temperature);
 		}
 
-		if (pressure > 50 && pressure < 325)
+		if (pressure.IsBetween(50, 325))
 		{
 			SetSpecificVisibility(false, pressureAlert.gameObject);
 		}
