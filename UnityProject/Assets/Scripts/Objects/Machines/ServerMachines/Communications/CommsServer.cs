@@ -41,7 +41,7 @@ namespace Objects.Machines.ServerMachines.Communications
 			integrity.OnApplyDamage.RemoveListener(OnDamageReceived);
 		}
 
-		public override void ReceiveSignal(SignalStrength strength, SignalEmitter responsibleEmitter, ISignalMessage message = null)
+		public override void ReceiveSignal(SignalStrength strength, GameObject responsibleEmitter, ISignalMessage message = null)
 		{
 			if(apcPoweredDevice.State == PowerState.Off) return;
 			if(message is not RadioMessageData c) return;

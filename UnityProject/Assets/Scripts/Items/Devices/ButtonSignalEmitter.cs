@@ -10,8 +10,11 @@ using UnityEngine;
 ///PLEASE REMOVE THIS (OR POLISH IT AND ADD IT TO THE LIST OF THINGS SCIENCE CAN MAKE) ONCE WE MAKE THE MOVE TO FULLY USE THE SIGNAL MANAGER
 namespace Items
 {
-	public class ButtonSignalEmitter : SignalEmitter, ICheckedInteractable<HandApply>, IInteractable<HandActivate>
+	public class ButtonSignalEmitter : MonoBehaviour, ICheckedInteractable<HandApply>, IInteractable<HandActivate>, ISignalEmitter
 	{
+		[SerializeField] private SignalData data;
+
+
 		public void ServerPerformInteraction(HandApply interaction)
 		{
 			if(interaction.TargetObject.TryGetComponent<DoorSwitch>(out var doorSwitch)
@@ -26,19 +29,15 @@ namespace Items
 			Chat.AddExamineMsg(interaction.Performer.gameObject, "You assign the receiver to this emitter.");
 		}
 
-		protected override bool SendSignalLogic()
-		{
-			return true;
-		}
-
-		public override void SignalFailed()
+		public void SignalFail()
 		{
 			Chat.AddLocalMsgToChat("Bzzt!", gameObject);
 		}
 
 		public void ServerPerformInteraction(HandActivate interaction)
 		{
-			TrySendSignal();
+			ISignalEmitter emitter = this;
+			emitter.EmitSignal(data, null);
 		}
 
 		public bool WillInteract(HandApply interaction, NetworkSide side)

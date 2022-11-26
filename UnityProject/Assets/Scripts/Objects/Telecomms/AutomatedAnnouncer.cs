@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using Managers;
 using Systems.Electricity;
 using UnityEngine;
 using Communications;
 using Objects.Machines.ServerMachines.Communications;
-using ScriptableObjects.Communications;
 using Systems.Communications;
 using InGameEvents;
+using Managers;
 
 namespace Objects.Telecomms
 {
-	public class AutomatedAnnouncer : SignalEmitter, IChatInfluencer
+	public class AutomatedAnnouncer : MonoBehaviour, IChatInfluencer, ISignalEmitter
 	{
+		[SerializeField] private SignalData signalData;
+
 		private const string machineName = "Announcing Machine";
 
 		private static readonly DateTime TIME_BEFORE_JOIN_ANNOUNCEMENTS = new DateTime().AddHours(12).AddSeconds(5);
@@ -31,15 +32,18 @@ namespace Objects.Telecomms
 		private APCPoweredDevice poweredDevice;
 		private Integrity integrity;
 
-		[SerializeField] private SignalDataSO radioSO;
-
 		private const float MINIMUM_DAMAGE_BEFORE_OBFUSCATION = 8f;
+
+		// You have to cache a reference to the interface to use default implementations of methods in interfaces.
+		// (Max): This is the dumbest thing in C#.
+		private ISignalEmitter emitter;
 
 		private void Start()
 		{
 			objectPhysics = GetComponent<UniversalObjectPhysics>();
 			poweredDevice = GetComponent<APCPoweredDevice>();
 			integrity = GetComponent<Integrity>();
+			emitter = this;
 		}
 
 		private void OnEnable()
@@ -67,15 +71,6 @@ namespace Objects.Telecomms
 
 			AnnounceNewCrewmember(args.player);
 		}
-
-		protected override bool SendSignalLogic()
-		{
-			if (GameManager.Instance.CommsServers.Count == 0) return false;
-			return true;
-		}
-
-		public override void SignalFailed() { }
-
 
 		private void AnnounceNewCrewmember(GameObject player)
 		{
@@ -161,15 +156,21 @@ namespace Objects.Telecomms
 			if (integrity.integrity > MINIMUM_DAMAGE_BEFORE_OBFUSCATION)
 			{
 				msg.ChatEvent = chatToManipulate;
-				TrySendSignal(radioSO, msg);
+				emitter.EmitSignal(signalData, msg);
 				return chatToManipulate;
 			}
 
 			var scrambledText = chatToManipulate;
 			scrambledText.message = EventProcessorOverload.ProcessMessage(scrambledText.message);
 			msg.ChatEvent = scrambledText;
-			TrySendSignal(radioSO, msg);
+			emitter.EmitSignal(signalData, msg);
 			return scrambledText;
+		}
+
+		public void SignalFail()
+		{
+			//TODO: Alert this failure to the communications officer in the future.
+			return;
 		}
 	}
 }

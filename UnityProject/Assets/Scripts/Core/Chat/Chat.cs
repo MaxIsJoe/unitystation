@@ -116,7 +116,7 @@ public partial class Chat : MonoBehaviour
 			if(slot.ItemObject.TryGetComponent<Headset>(out var headset) == false) continue;
 			//The headset is responsible for sending this chatEvent to an in-game server that
 			//relays this chatEvent to other players
-			headset.TrySendSignal(null, radioMessageData);
+			headset.Emitter.EmitSignal(headset.SignalData, radioMessageData);
 		}
 	}
 

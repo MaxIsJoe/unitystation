@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Communications;
 using Items;
+using Managers;
 using Mirror;
 using Systems.Explosions;
 using UnityEngine;
@@ -8,7 +10,7 @@ using UnityEngine;
 /// <summary>
 ///     Headset properties
 /// </summary>
-public class Headset : SignalEmitter, IInteractable<HandActivate>, IExaminable, IEmpAble
+public class Headset : NetworkBehaviour, IInteractable<HandActivate>, IExaminable, IEmpAble, ISignalEmitter
 {
 	[SyncVar] public EncryptionKeyType EncryptionKey;
 	[SyncVar] public bool LoudSpeakOn = false;
@@ -16,9 +18,19 @@ public class Headset : SignalEmitter, IInteractable<HandActivate>, IExaminable, 
 	public bool HasLoudSpeak = false;
 	public Loudness LoudspeakLevel = Loudness.SCREAMING;
 
+	[field: SerializeField] public SignalData SignalData { get; private set; }
+
+	private ISignalEmitter emitter;
+	public ISignalEmitter Emitter => emitter;
+
 	public void init()
 	{
 		getEncryptionTypeFromHier();
+	}
+
+	private void Awake()
+	{
+		emitter = this;
 	}
 
 	public void ServerPerformInteraction(HandActivate interaction)
@@ -30,17 +42,6 @@ public class Headset : SignalEmitter, IInteractable<HandActivate>, IExaminable, 
 			Chat.AddExamineMsg(interaction.Performer, $"You {result} the {gameObject.ExpensiveName()}");
 		}
 	}
-
-	protected override bool SendSignalLogic()
-	{
-		if (GameManager.Instance.CommsServers.Count == 0) return false;
-		return isEMPed == false;
-	}
-
-	/// <summary>
-	/// Nothing happens in SS13 when a fail happens so I guess leave it like that
-	/// </summary>
-	public override void SignalFailed() { }
 
 	public string Examine(Vector3 worldPos = default)
 	{

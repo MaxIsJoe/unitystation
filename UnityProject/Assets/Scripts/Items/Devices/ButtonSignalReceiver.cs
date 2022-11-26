@@ -10,25 +10,21 @@ using Objects.Wallmounts;
 ///PLEASE REMOVE THIS (OR POLISH IT AND ADD IT TO THE LIST OF THINGS SCIENCE CAN MAKE) ONCE WE MAKE THE MOVE TO FULLY USE THE SIGNAL MANAGER
 namespace Items
 {
-	public class ButtonSignalReceiver : SignalReceiver, ICheckedInteractable<HandApply>
+	public class ButtonSignalReceiver : SignalReceiver, ICheckedInteractable<HandApply>, ISignalEmitter
 	{
 		public DoorSwitch doorSwitch;
 
-		public override void ReceiveSignal(SignalStrength strength, SignalEmitter responsibleEmitter, ISignalMessage message = null)
+		public override void ReceiveSignal(SignalStrength strength, GameObject responsibleEmitter, ISignalMessage message = null)
 		{
-			if (doorSwitch != null)
-			{
-				doorSwitch.RunDoorController();
-				Respond(Emitter);
-				return;
-			}
-			Emitter.SignalFailed();
+			if (doorSwitch == null) return;
+			doorSwitch.RunDoorController();
+			Respond(responsibleEmitter);
 		}
 
 
-		public override void Respond(SignalEmitter signalEmitter)
+		public override void Respond(GameObject signalEmitter)
 		{
-			Chat.AddLocalMsgToChat("Signal received!", signalEmitter.gameObject);
+			Chat.AddLocalMsgToChat("Signal received!", signalEmitter);
 		}
 
 		public void ServerPerformInteraction(HandApply interaction)

@@ -40,7 +40,7 @@ namespace Items.Weapons
 		[HideInInspector] public GUI_Explosive GUI;
 		[SyncVar(hook=nameof(OnArmStateChange))] protected bool isArmed;
 		[SyncVar] protected bool countDownActive = false;
-		protected List<SignalEmitter> emitters = new List<SignalEmitter>();
+		protected List<ISignalEmitter> emitters = new List<ISignalEmitter>();
 
 		public int MinimumTimeToDetonate => minimumTimeToDetonate;
 		public bool DetonateImmediatelyOnSignal => detonateImmediatelyOnSignal;
@@ -109,7 +109,7 @@ namespace Items.Weapons
 			detonateImmediatelyOnSignal = mode;
 		}
 
-		public override void ReceiveSignal(SignalStrength strength, SignalEmitter responsibleEmitter, ISignalMessage message = null)
+		public override void ReceiveSignal(SignalStrength strength, GameObject responsibleEmitter, ISignalMessage message = null)
 		{
 			if(gameObject == null || countDownActive == true) return;
 			if(ValidSignal(responsibleEmitter) == false) return;
@@ -121,15 +121,9 @@ namespace Items.Weapons
 			StartCoroutine(Countdown());
 		}
 
-		private bool ValidSignal(SignalEmitter responsibleEmitter)
-		{
-			if(PassCode == 0) return true; //0 means that this explosive will accept any signal it passes through it even if it's not on the emitter list.
-			return emitters.Contains(responsibleEmitter) && responsibleEmitter.Passcode == PassCode;
-		}
-
 		protected bool HackEmitter(TargetedInteraction interaction)
 		{
-			if (interaction.UsedObject == null || interaction.UsedObject.TryGetComponent<SignalEmitter>(out var emitter) == false) return false;
+			if (interaction.UsedObject == null || interaction.UsedObject.TryGetComponent<ISignalEmitter>(out var emitter) == false) return false;
 			void Hack()
 			{
 				emitters.Add(emitter);
