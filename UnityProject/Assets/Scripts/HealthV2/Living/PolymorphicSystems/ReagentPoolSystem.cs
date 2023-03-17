@@ -32,6 +32,11 @@ namespace HealthV2.Living.PolymorphicSystems
 		///</summary>
 		public void AddFreshBlood(ReagentMix bloodPool, float amount)
 		{
+			if (bloodType == null)
+			{
+				Logger.LogError("[Health/ReagentPoolSystem] - No blood type detected! Cannot add fresh blood.");
+				return;
+			}
 			// Currently only does blood and required reagents, should at nutriments and other common gases
 			var bloodToAdd = new ReagentMix(bloodType, amount);
 			bloodToAdd.Add(CirculatedReagent, bloodType.GetSpareGasCapacity(bloodToAdd));
