@@ -15,6 +15,8 @@ namespace Map.Areas
 
 		[SerializeField] private GameObject visualizer;
 
+		private readonly string mapDataPath = Path.Combine(Application.streamingAssetsPath, "MapData");
+
 		public void Awake()
 		{
 			if (MapAreaDataID is null or "")
@@ -22,6 +24,7 @@ namespace Map.Areas
 				Logger.LogWarning("[MapAreas] - No ID set.");
 				return;
 			}
+			LoadCurrentAreaData();
 		}
 
 		public void CreateNewArea(Vector3Int location, string ID, string name, List<string> tags = null, Color? newColor = null)
@@ -51,14 +54,16 @@ namespace Map.Areas
 		{
 			if (Application.isPlaying == false) return;
 			var data = JsonConvert.SerializeObject(Areas);
-			File.WriteAllText(Path.Combine(Application.streamingAssetsPath, "MapData", $"{MapAreaDataID}.json"), data);
+			File.WriteAllText(Path.Combine(mapDataPath, $"{MapAreaDataID}.json"), data);
 		}
 
 		[Button("Load Areas From File")]
 		public void LoadCurrentAreaData()
 		{
 			if (Application.isPlaying == false) return;
-			Areas = JsonUtility.FromJson<Dictionary<Vector3Int, Area>>(File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "MapData", $"{MapAreaDataID}.json")));
+			var path = Path.Combine(mapDataPath, $"{MapAreaDataID}.json");
+			if(File.Exists(path) == false) return;
+			Areas = JsonUtility.FromJson<Dictionary<Vector3Int, Area>>(File.ReadAllText(path));
 		}
 
 		[Button("[DEBUG] Set Test Data Under Player")]
