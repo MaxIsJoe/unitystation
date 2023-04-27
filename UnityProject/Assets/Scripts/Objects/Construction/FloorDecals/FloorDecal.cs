@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using Mirror;
 
@@ -41,6 +42,9 @@ namespace Objects.Construction
 		private SpriteRenderer spriteRenderer;
 
 		public bool DontTouchSpriteRenderer = false;
+
+		[SerializeField] private Shader cleaningShader;
+		[SerializeField] private float cleaningAnimTime = 0.8f;
 
 
 		private void Awake()
@@ -91,11 +95,37 @@ namespace Objects.Construction
 		/// <summary>
 		///attempts to clean this decal, cleaning it if it is cleanable
 		/// </summary>
-		public void TryClean()
+		public async Task TryClean()
 		{
+			CleanAnim();
+			await Task.Delay((int)(cleaningAnimTime * 1000));
 			if (Cleanable)
 			{
 				_ = Despawn.ServerSingle(gameObject);
+			}
+		}
+
+		[ClientRpc]
+		private void CleanAnim()
+		{
+			StartCoroutine(CleanAnimProcess());
+		}
+
+		private IEnumerator CleanAnimProcess()
+		{
+			int times = 0;
+			spriteRenderer.material.shader = cleaningShader;
+			var material = spriteRenderer.material;
+			material.SetTexture("_MainTex", spriteRenderer.sprite.texture);
+			while (times < 8)
+			{
+				times++;
+				yield return WaitFor.Seconds(0.1f);
+
+				material.SetFloat("_trans",
+					Mathf.Clamp(
+						material.GetFloat("_trans") - 0.2f,
+						0.01f, 1));
 			}
 		}
 	}
