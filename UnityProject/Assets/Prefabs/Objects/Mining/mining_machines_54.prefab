@@ -197,7 +197,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: for all your mining needs
   canBeLabelled: 1
 --- !u!114 &114553154410610264
 MonoBehaviour:

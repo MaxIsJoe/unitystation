@@ -77,7 +77,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: Used to put holes in walls that are in your way, keep a safe
+    distance away from them when they flash.
   canBeLabelled: 1
 --- !u!114 &6536533875639940645
 MonoBehaviour:

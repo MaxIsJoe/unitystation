@@ -170,7 +170,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: A flimsy framework of metal rods.
   canBeLabelled: 1
 --- !u!114 &7479226819894283132
 MonoBehaviour:

@@ -200,7 +200,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: Grinds and juices.
   canBeLabelled: 1
 --- !u!114 &114642639155130402
 MonoBehaviour:

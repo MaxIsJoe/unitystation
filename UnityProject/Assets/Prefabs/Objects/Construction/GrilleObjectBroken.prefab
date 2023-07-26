@@ -37,6 +37,11 @@ PrefabInstance:
       propertyPath: initialDescription
       value: A broken mess of twisted rods.
       objectReference: {fileID: 0}
+    - target: {fileID: 6874633958757442224, guid: e7a19fe59d5bcfe49a1d885d7fedab6e,
+        type: 3}
+      propertyPath: initialDescription
+      value: A broken mess of twisted rods.
+      objectReference: {fileID: 0}
     - target: {fileID: 7254393612801982914, guid: e7a19fe59d5bcfe49a1d885d7fedab6e,
         type: 3}
       propertyPath: m_Sprite

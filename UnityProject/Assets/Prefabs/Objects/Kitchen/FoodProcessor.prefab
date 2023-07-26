@@ -201,7 +201,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: Processes stuff, mostly food.
   canBeLabelled: 1
 --- !u!114 &114633863754598570
 MonoBehaviour:

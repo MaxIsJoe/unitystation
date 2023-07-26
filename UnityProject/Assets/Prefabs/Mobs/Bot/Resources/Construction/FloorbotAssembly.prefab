@@ -86,7 +86,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: A bizarre assembly of parts resembling a robot
   canBeLabelled: 1
 --- !u!114 &8161666226607775310
 MonoBehaviour:

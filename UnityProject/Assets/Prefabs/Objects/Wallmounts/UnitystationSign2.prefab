@@ -88,7 +88,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: '"Join our Discord server!"'
   canBeLabelled: 1
 --- !u!95 &95597919217018486
 Animator:

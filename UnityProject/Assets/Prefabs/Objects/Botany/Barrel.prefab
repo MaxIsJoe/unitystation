@@ -451,7 +451,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: A large wooden barrel. You can ferment fruits and such inside
+    it, or just use it to hold liquid.
   canBeLabelled: 1
 --- !u!1 &1645206044070412
 GameObject:

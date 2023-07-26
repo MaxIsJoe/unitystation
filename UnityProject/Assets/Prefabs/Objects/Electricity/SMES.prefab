@@ -93,7 +93,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: A high-capacity superconducting magnetic energy storage (SMES)
+    unit.
   canBeLabelled: 1
 --- !u!114 &114429980035310924
 MonoBehaviour:

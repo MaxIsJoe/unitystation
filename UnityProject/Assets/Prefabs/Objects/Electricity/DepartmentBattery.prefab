@@ -94,7 +94,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: It receives power from the SMES by the medium voltage wires
+    and distributes the power to the local APCs by the low voltage wires.
   canBeLabelled: 1
 --- !u!114 &114038174743996046
 MonoBehaviour:

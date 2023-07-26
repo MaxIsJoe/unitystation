@@ -168,7 +168,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: Deep fried everything.
   canBeLabelled: 1
 --- !u!114 &114394785106154624
 MonoBehaviour:

@@ -194,7 +194,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: A very sharp axe blade upon a short fibremetal handle. It has
+    a long history of chopping things, but now it is used for chopping wood.
   canBeLabelled: 1
 --- !u!114 &6066655661546599735
 MonoBehaviour:
@@ -451,6 +452,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a4b4f2b465887014886854e1a8d66c4c, type: 2}
   CurrentClothIndex: 0
   randomInitialClothData: 0
+  providesArtisticName: 0
+  artisticNameType: 0
   hidesIdentity: 0
   hidesSlots: 0
   hideClothingFlags: 0

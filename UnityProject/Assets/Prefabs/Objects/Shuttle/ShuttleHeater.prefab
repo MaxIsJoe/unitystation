@@ -85,7 +85,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: These tubes are under pressure, you rater not mess with them...
   canBeLabelled: 1
 --- !u!114 &114255515820156884
 MonoBehaviour:

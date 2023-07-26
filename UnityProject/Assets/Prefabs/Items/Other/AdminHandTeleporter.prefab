@@ -136,7 +136,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: 'Now you never have to walk again. '
   canBeLabelled: 1
 --- !u!114 &114734890905785284
 MonoBehaviour:

@@ -774,7 +774,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: Travel to distant worlds.
   canBeLabelled: 1
 --- !u!114 &74958767906644875
 MonoBehaviour:

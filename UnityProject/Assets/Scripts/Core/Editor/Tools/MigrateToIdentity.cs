@@ -1,6 +1,12 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
 using Core.Identity;
 using UnityEditor;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 namespace Core.Editor.Tools
@@ -34,10 +40,19 @@ namespace Core.Editor.Tools
 			return gameObjects;
 		}
 
-		private void MigrateNameAndDescription(GameObject[] gameObjects)
+		private IEnumerator MigrateNameAndDescription(GameObject[] gameObjects)
 		{
+			if (Application.isPlaying == false)
+			{
+				Logger.LogError("This must be called from within playmode..");
+				yield break;
+			}
+			Logger.Log($"Starting migration process.. Editing {gameObjects.Length} assets.");
+			var totalTime = new Stopwatch();
+			totalTime.Start();
 			foreach (var go in gameObjects)
 			{
+				yield return WaitFor.EndOfFrame;
 				var entityIdentity = go.GetComponent<SimpleIdentity>();
 				var attributes = go.GetComponent<global::Attributes>();
 
@@ -45,8 +60,11 @@ namespace Core.Editor.Tools
 				entityIdentity.SetDisplayName(string.Empty, attributes.ArticleName);
 				entityIdentity.SetDescription(string.Empty ,BuildDescription(attributes.InitialDescription));
 				EditorUtility.SetDirty(go);
-				AssetDatabase.SaveAssets();
+				Logger.Log($"Edited {go.name} successfully.");
 			}
+			Logger.Log($"Finished editing batch after {totalTime.Elapsed.Seconds} seconds.. Saving..");
+			totalTime.Stop();
+			AssetDatabase.SaveAssets();
 		}
 
 		private string BuildDescription(string description)
@@ -71,7 +89,11 @@ namespace Core.Editor.Tools
 
 		private void OnWizardCreate()
 		{
-			MigrateNameAndDescription(AllGameObjects());
+			var allObjs = AllGameObjects();
+			var listOne = allObjs.Take(allObjs.Length / 2);
+			var listTwo = allObjs.Take(allObjs.Length);
+			GameManager.Instance.StartCoroutine(MigrateNameAndDescription(listOne.ToArray()));
+			GameManager.Instance.StartCoroutine(MigrateNameAndDescription(listTwo.ToArray()));
 		}
 	}
 }

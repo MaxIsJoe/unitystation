@@ -105,6 +105,9 @@ MonoBehaviour:
   pushTextureOnStartUp: 1
   initialVariantIndex: 0
   palette: []
+  OnSpriteUpdated:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &7093473227032896787
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -123,6 +126,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 070e5986e8c504647ab544b7a02aa5c2,
         type: 2}
+    - target: {fileID: 4347135345234725326, guid: 364841a08150e9345b119e71191c8dcf,
+        type: 3}
+      propertyPath: initialDescription
+      value: A simple bowl, used for soups and salads.
+      objectReference: {fileID: 0}
     - target: {fileID: 5198608423821879186, guid: 364841a08150e9345b119e71191c8dcf,
         type: 3}
       propertyPath: m_RootOrder

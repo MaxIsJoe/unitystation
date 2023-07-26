@@ -310,7 +310,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: The sight of bees buzzing about is so mesmerizing!
   canBeLabelled: 1
 --- !u!1 &1611438165515314
 GameObject:

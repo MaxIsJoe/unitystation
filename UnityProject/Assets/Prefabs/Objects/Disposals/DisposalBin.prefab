@@ -91,7 +91,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: A pneumatic waste disposal unit. What can fit in this?
   canBeLabelled: 1
 --- !u!114 &114666758296114814
 MonoBehaviour:

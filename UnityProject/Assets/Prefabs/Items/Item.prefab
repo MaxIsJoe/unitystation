@@ -65,7 +65,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: Oops, someone spawned something they shouldn't!
   canBeLabelled: 1
 --- !u!114 &499351249353511896
 MonoBehaviour:

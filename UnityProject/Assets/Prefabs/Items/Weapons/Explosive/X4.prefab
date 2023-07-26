@@ -77,7 +77,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: The #1 assanation tool in space!
   canBeLabelled: 1
 --- !u!114 &6536533875639940645
 MonoBehaviour:

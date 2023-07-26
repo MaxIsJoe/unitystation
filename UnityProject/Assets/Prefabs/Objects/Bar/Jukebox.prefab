@@ -393,7 +393,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   initialName: Unknown
-  initialDescription: This is a {0}.
+  initialDescription: A bastion of goodwill, peace, and hope.
   canBeLabelled: 1
 --- !u!1 &1000010906387252
 GameObject:
