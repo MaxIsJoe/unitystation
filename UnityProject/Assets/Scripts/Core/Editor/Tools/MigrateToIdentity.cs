@@ -29,9 +29,16 @@ namespace Core.Editor.Tools
 		/// <returns></returns>
 		private GameObject[] AllGameObjects()
 		{
-			string[] guids = AssetDatabase.FindAssets("t:GameObject");
-			GameObject[] gameObjects = new GameObject[guids.Length];
-			for (int i = 0; i < guids.Length; i++)
+			List<string> guids = new List<string>();
+			foreach (var prefab in CustomNetworkManager.Instance.allSpawnablePrefabs)
+			{
+				if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(prefab, out var s, out long id))
+				{
+					guids.Add(s);
+				}
+			}
+			GameObject[] gameObjects = new GameObject[guids.Count];
+			for (int i = 0; i < guids.Count; i++)
 			{
 				string path = AssetDatabase.GUIDToAssetPath(guids[i]);
 				gameObjects[i] = AssetDatabase.LoadAssetAtPath<GameObject>(path);
@@ -47,23 +54,36 @@ namespace Core.Editor.Tools
 				Logger.LogError("This must be called from within playmode..");
 				yield break;
 			}
+
+			var index = 0;
 			Logger.Log($"Starting migration process.. Editing {gameObjects.Length} assets.");
 			var totalTime = new Stopwatch();
 			totalTime.Start();
 			foreach (var go in gameObjects)
 			{
+				index++;
 				yield return WaitFor.EndOfFrame;
-				var entityIdentity = go.GetComponent<SimpleIdentity>();
-				var attributes = go.GetComponent<global::Attributes>();
-
-				if (entityIdentity == null || attributes == null) continue;
-				entityIdentity.SetDisplayName(string.Empty, attributes.ArticleName);
-				entityIdentity.SetDescription(string.Empty ,BuildDescription(attributes.InitialDescription));
-				EditorUtility.SetDirty(go);
-				Logger.Log($"Edited {go.name} successfully.");
+				try
+				{
+					if (go == null || go.TryGetComponent<SimpleIdentity>(out var entityIdentity) == false
+					    || go.TryGetComponent<global::Attributes>(out var attributes) == false) continue;
+					entityIdentity.SetDisplayName(string.Empty, attributes.ArticleName);
+					entityIdentity.SetDescription(string.Empty ,BuildDescription(attributes.InitialDescription));
+					EditorUtility.SetDirty(go);
+					EditorUtility.DisplayProgressBar($"{gameObjects.Length}",
+						$"Edited {go.name} successfully. {index} out of {gameObjects.Length}", index / gameObjects.Length);
+				}
+				catch (Exception e)
+				{
+					Logger.LogError(e.ToString());
+					EditorUtility.DisplayProgressBar($"{gameObjects.Length}",
+						$"Failed to edit a gameobject. {index} out of {gameObjects.Length}", index / gameObjects.Length);
+					continue;
+				}
 			}
 			Logger.Log($"Finished editing batch after {totalTime.Elapsed.Seconds} seconds.. Saving..");
 			totalTime.Stop();
+			EditorUtility.ClearProgressBar();
 			AssetDatabase.SaveAssets();
 		}
 
@@ -89,11 +109,7 @@ namespace Core.Editor.Tools
 
 		private void OnWizardCreate()
 		{
-			var allObjs = AllGameObjects();
-			var listOne = allObjs.Take(allObjs.Length / 2);
-			var listTwo = allObjs.Take(allObjs.Length);
-			GameManager.Instance.StartCoroutine(MigrateNameAndDescription(listOne.ToArray()));
-			GameManager.Instance.StartCoroutine(MigrateNameAndDescription(listTwo.ToArray()));
+			GameManager.Instance.StartCoroutine(MigrateNameAndDescription(AllGameObjects()));
 		}
 	}
 }
