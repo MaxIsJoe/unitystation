@@ -67,6 +67,7 @@ namespace Core.Editor.Tools
 			log.Add("Running!");
 			var guids = AssetDatabase.FindAssets("t:GameObject", new[] {folder});
 			var gameObjects = new GameObject[guids.Length];
+			Logger.Log(gameObjects.Length.ToString());
 			for (int i = 0; i < guids.Length; i++)
 			{
 				string path = AssetDatabase.GUIDToAssetPath(guids[i]);
