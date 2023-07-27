@@ -29,6 +29,7 @@ namespace Core.Editor.Tools
 		/// <returns></returns>
 		private GameObject[] AllGameObjects()
 		{
+			/*
 			List<string> guids = new List<string>();
 			foreach (var prefab in CustomNetworkManager.Instance.allSpawnablePrefabs)
 			{
@@ -37,8 +38,10 @@ namespace Core.Editor.Tools
 					guids.Add(s);
 				}
 			}
-			GameObject[] gameObjects = new GameObject[guids.Count];
-			for (int i = 0; i < guids.Count; i++)
+			*/
+			string[] guids = AssetDatabase.FindAssets("t:GameObject");
+			GameObject[] gameObjects = new GameObject[guids.Length];
+			for (int i = 0; i < guids.Length; i++)
 			{
 				string path = AssetDatabase.GUIDToAssetPath(guids[i]);
 				gameObjects[i] = AssetDatabase.LoadAssetAtPath<GameObject>(path);
