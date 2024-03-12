@@ -4,6 +4,7 @@ using System.Text;
 using UnityEngine;
 using NaughtyAttributes;
 using UI.Systems.Tooltips.HoverTooltips;
+using Util.Independent.FluentRichText;
 
 
 namespace Items.Food
@@ -76,14 +77,15 @@ namespace Items.Food
 
 		public string Examine(Vector3 worldPos = default(Vector3))
 		{
-			var exanimeInfo = new StringBuilder();
-			exanimeInfo.AppendLine($"This item is cookable. {CookTime}s ");
+			var exanimeInfo = $"This item is cookable. {CookTime}s";
 			if (timeSpentCooking > 0.1f)
 			{
-				float percentage = (timeSpentCooking / CookTime) * 100;
-				exanimeInfo.Append($"- [{percentage}%]");
+				var percentage = (int)(timeSpentCooking / CookTime) * 100;
+				exanimeInfo += "/[";
+				exanimeInfo += $"{percentage}%".Color(Color.green);
+				exanimeInfo += "]";
 			}
-			return exanimeInfo.ToString();
+			return exanimeInfo;
 		}
 
 		public string HoverTip()
