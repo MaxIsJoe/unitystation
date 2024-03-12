@@ -1,0 +1,172 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &8128863177726922427
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3846487292726357589, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846487292726357589, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846487292726357589, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846487292726357589, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846487292726357589, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846487292726357589, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846487292726357589, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846487292726357589, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846487292726357589, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846487292726357589, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3851917000086120591, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: m_Name
+      value: Forge
+      objectReference: {fileID: 0}
+    - target: {fileID: 3897019895655943320, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3897019895655943320, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3897019895655943320, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 47c0d9b7904bb7c4189ed8c77c026bcd,
+        type: 3}
+    - target: {fileID: 3897019895655943320, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4659277074312158701, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: _assetId
+      value: 4035441756
+      objectReference: {fileID: 0}
+    - target: {fileID: 5663293249459889938, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: Armor.Rad
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5663293249459889938, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: Armor.Bomb
+      value: -25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5663293249459889938, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: Armor.Laser
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 5663293249459889938, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: Armor.Melee
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5663293249459889938, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: Armor.Bullet
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5663293249459889938, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: Armor.Energy
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5663293249459889938, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: HeatResistance
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 5663293249459889938, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: Resistances.LavaProof
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5663293249459889938, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: Armor.PressureProtectionInKpa.y
+      value: 1250
+      objectReference: {fileID: 0}
+    - target: {fileID: 5663293249459889938, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: Armor.TemperatureProtectionInK.y
+      value: 6000
+      objectReference: {fileID: 0}
+    - target: {fileID: 5895563674239530943, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: initialName
+      value: Forge
+      objectReference: {fileID: 0}
+    - target: {fileID: 5895563674239530943, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: initialSize
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5895563674239530943, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: CanBeSoldInCargo
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5895563674239530943, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: initialDescription
+      value: A structure used to heat up, mold and refine materials.
+      objectReference: {fileID: 0}
+    - target: {fileID: 8585042614081307221, guid: bdc0bbe82126ea747b3fc1d25464d588,
+        type: 3}
+      propertyPath: PresentSpriteSet
+      value: 
+      objectReference: {fileID: 11400000, guid: 6de1962eda369b1489295fe2ea647fc1,
+        type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bdc0bbe82126ea747b3fc1d25464d588, type: 3}

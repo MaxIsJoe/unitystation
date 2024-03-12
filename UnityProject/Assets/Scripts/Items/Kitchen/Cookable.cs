@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using NaughtyAttributes;
+using UI.Systems.Tooltips.HoverTooltips;
 
 
 namespace Items.Food
@@ -11,7 +14,7 @@ namespace Items.Food
 	/// <para>The <see cref="OnCooked"/> event is raised when something cooks this, which other
 	/// components can subscribe to, to perform extra logic (for e.g. microwaving dice to rig them).</para>
 	/// </summary>
-	public class Cookable : MonoBehaviour
+	public class Cookable : MonoBehaviour, IExaminable, IHoverTooltip
 	{
 		[Tooltip("Minimum time to cook.")]
 		public int CookTime = 10;
@@ -69,6 +72,43 @@ namespace Items.Food
 		{
 			_ = Despawn.ServerSingle(gameObject);
 			Spawn.ServerPrefab(CookedProduct, gameObject.RegisterTile().WorldPosition, transform.parent);
+		}
+
+		public string Examine(Vector3 worldPos = default(Vector3))
+		{
+			var exanimeInfo = new StringBuilder();
+			exanimeInfo.AppendLine($"This item is cookable. {CookTime}s ");
+			if (timeSpentCooking > 0.1f)
+			{
+				float percentage = (timeSpentCooking / CookTime) * 100;
+				exanimeInfo.Append($"- [{percentage}%]");
+			}
+			return exanimeInfo.ToString();
+		}
+
+		public string HoverTip()
+		{
+			return Examine();
+		}
+
+		public string CustomTitle()
+		{
+			return null;
+		}
+
+		public Sprite CustomIcon()
+		{
+			return null;
+		}
+
+		public List<Sprite> IconIndicators()
+		{
+			return null;
+		}
+
+		public List<TextColor> InteractionsStrings()
+		{
+			return null;
 		}
 	}
 
