@@ -68,17 +68,17 @@ PrefabInstance:
     - target: {fileID: 1362573601969762483, guid: eaf8c1f2a0f9374488e16061fd5b4dcd,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1362573601969762483, guid: eaf8c1f2a0f9374488e16061fd5b4dcd,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1362573601969762483, guid: eaf8c1f2a0f9374488e16061fd5b4dcd,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1362573601969762483, guid: eaf8c1f2a0f9374488e16061fd5b4dcd,
         type: 3}
@@ -154,6 +154,11 @@ PrefabInstance:
         type: 2}
     - target: {fileID: 2699307914152838379, guid: eaf8c1f2a0f9374488e16061fd5b4dcd,
         type: 3}
+      propertyPath: integrity
+      value: 
+      objectReference: {fileID: 5933848703287211920}
+    - target: {fileID: 2699307914152838379, guid: eaf8c1f2a0f9374488e16061fd5b4dcd,
+        type: 3}
       propertyPath: CookableBy
       value: 8
       objectReference: {fileID: 0}
@@ -193,6 +198,18 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 68293381239540431}
   m_SourcePrefab: {fileID: 100100000, guid: eaf8c1f2a0f9374488e16061fd5b4dcd, type: 3}
+--- !u!114 &5933848703287211920 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1396367982544952371, guid: eaf8c1f2a0f9374488e16061fd5b4dcd,
+    type: 3}
+  m_PrefabInstance: {fileID: 4699971015894805411}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6035652412496520804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f24590037b6b486082fc874d1bfd9d95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6035652412496520804 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1367782950990450119, guid: eaf8c1f2a0f9374488e16061fd5b4dcd,

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 using NaughtyAttributes;
 using UI.Systems.Tooltips.HoverTooltips;
@@ -17,6 +16,9 @@ namespace Items.Food
 	/// </summary>
 	public class Cookable : MonoBehaviour, IExaminable, IHoverTooltip
 	{
+		[SerializeField]
+		private Integrity integrity;
+
 		[Tooltip("Minimum time to cook.")]
 		public int CookTime = 10;
 
@@ -36,13 +38,33 @@ namespace Items.Food
 
 		private float timeSpentCooking;
 
+		[BoxGroup("Cooking by damage settings")]
+		[field: SerializeField]
+		public float minimumDamage = 1f;
+		[BoxGroup("Cooking by damage settings")]
+		[field: SerializeField]
+		public DamageType cookingByDamageType = DamageType.Burn;
+		[BoxGroup("Cooking by damage settings")]
+		[field: SerializeField]
+		public AttackType cookingByAttackType = AttackType.Fire;
+
 		private void Awake()
 		{
+			if (integrity == null) integrity = GetComponent<Integrity>();
+			integrity.OnApplyDamage.AddListener(OnDamageReceived);
 			if (CookableBy.HasFlag(CookSource.BurnUp))
 			{
 				GetComponent<Integrity>().OnBurnUpServer += OnBurnUpServer;
 			}
 		}
+
+		private void OnDamageReceived(DamageInfo info)
+		{
+			if (info.Damage < minimumDamage) return;
+			if (info.DamageType != cookingByDamageType && info.AttackType != cookingByAttackType) return;
+			AddCookingTime(info.Damage / 2f);
+		}
+
 
 		/// <summary>
 		///  basically resets all the cooking time
@@ -77,11 +99,11 @@ namespace Items.Food
 
 		public string Examine(Vector3 worldPos = default(Vector3))
 		{
-			var exanimeInfo = $"This item is cookable. {CookTime}s";
+			var exanimeInfo = $"This item can be cooked under heat. {CookTime} seconds.";
 			if (timeSpentCooking > 0.1f)
 			{
-				var percentage = (int)(timeSpentCooking / CookTime) * 100;
-				exanimeInfo += "/[";
+				var percentage = (int)((timeSpentCooking / CookTime) * 100);
+				exanimeInfo += " [";
 				exanimeInfo += $"{percentage}%".Color(Color.green);
 				exanimeInfo += "]";
 			}
