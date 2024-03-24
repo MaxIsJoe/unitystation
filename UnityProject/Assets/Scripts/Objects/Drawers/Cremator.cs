@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using AddressableReferences;
 using HealthV2;
+using Objects.Production;
 using Systems.Clearance;
 
 namespace Objects.Drawers
@@ -12,6 +13,7 @@ namespace Objects.Drawers
 	/// TODO: Implement activation via button when buttons can be assigned a generic component instead of only a DoorController component
 	/// and remove the activation by right-click option.
 	/// </summary>
+	[RequireComponent(typeof(BurningStorage))]
 	public class Cremator : Drawer, IRightClickable, ICheckedInteractable<ContextMenuApply>
 	{
 		[Tooltip("Sound used for cremation.")]
@@ -30,15 +32,15 @@ namespace Objects.Drawers
 
 		private const float BURNING_DURATION = 5f;
 
-		[SerializeField] private float burningDamage = 25f;
+		[SerializeField] private BurningStorage creamationStorage;
 
 		protected override void Awake()
 		{
 			base.Awake();
 			clearanceRestricted = GetComponent<ClearanceRestricted>();
+			creamationStorage ??= GetComponent<BurningStorage>();
 		}
 
-		// This region (Interaction-RightClick) shouldn't exist once TODO in class summary is done.
 		#region Interaction-RightClick
 
 		public RightClickableResult GenerateRightClickOptions()
@@ -49,7 +51,7 @@ namespace Objects.Drawers
 			if (clearanceRestricted.HasClearance(PlayerManager.LocalPlayerObject) == false) return result;
 
 			var cremateInteraction = ContextMenuApply.ByLocalPlayer(gameObject, null);
-			if (!WillInteract(cremateInteraction, NetworkSide.Client)) return result;
+			if (WillInteract(cremateInteraction, NetworkSide.Client) == false) return result;
 
 			return result.AddElement("Activate", () => OnCremateClicked(cremateInteraction));
 		}
@@ -108,7 +110,8 @@ namespace Objects.Drawers
 		public override void OpenDrawer()
 		{
 			base.OpenDrawer();
-			if(drawerState == (DrawerState)CrematorState.ShutAndActive) StopCoroutine(BurnContent());
+			if (drawerState == (DrawerState)CrematorState.ShutAndActive) StopCoroutine(BurnContent());
+			creamationStorage.TurnOff();
 		}
 
 		private void UpdateCloseState()
@@ -128,20 +131,11 @@ namespace Objects.Drawers
 			UpdateCloseState();
 			OnStartPlayerCremation();
 			StartCoroutine(nameof(BurnContent));
+			creamationStorage.TurnOn();
 		}
 
 		private IEnumerator BurnContent()
 		{
-			foreach (var obj in container.GetStoredObjects())
-			{
-				if(obj.TryGetComponent<Integrity>(out var integrity)) //For items
-					integrity.ApplyDamage(burningDamage, AttackType.Fire, DamageType.Burn, true);
-				if (obj.TryGetComponent<LivingHealthBehaviour>(out var healthBehaviour)) //For NPCs
-					healthBehaviour.ApplyDamage(gameObject, burningDamage, AttackType.Fire, DamageType.Burn);
-				if (obj.TryGetComponent<PlayerHealthV2>(out var playerHealthV2)) //For Players
-					playerHealthV2.ApplyDamageAll(gameObject, burningDamage, AttackType.Fire, DamageType.Burn, false, TraumaticDamageTypes.BURN);
-			}
-
 			yield return WaitFor.Seconds(BURNING_DURATION);
 			//if it's just closed but not active don't start this again.
 			if (drawerState == DrawerState.Shut || drawerState == DrawerState.Open) yield break;
@@ -150,19 +144,17 @@ namespace Objects.Drawers
 
 		private void OnStartPlayerCremation()
 		{
-
 			var objectsInContainer = container.GetStoredObjects();
 			foreach (var player in objectsInContainer)
 			{
-				if (player.TryGetComponent<PlayerHealthV2>(out var healthBehaviour))
+				if (player.TryGetComponent<PlayerHealthV2>(out var healthBehaviour) == false) continue;
+				if (healthBehaviour.ConsciousState is ConsciousState.CONSCIOUS or ConsciousState.BARELY_CONSCIOUS)
 				{
-					if(healthBehaviour.ConsciousState == ConsciousState.CONSCIOUS ||
-					   healthBehaviour.ConsciousState == ConsciousState.BARELY_CONSCIOUS)
-						EntityTryEscape(player, null, MoveAction.NoMove);
-					// TODO: This is an incredibly brutal SFX... it also needs chopping up.
-					// (Max): We should use the scream emote from the emote system when sounds are added for them
-					// codacy ignore this ->SoundManager.PlayNetworkedAtPos("ShyguyScream", DrawerWorldPosition, sourceObj: gameObject);
+					EntityTryEscape(player, null, MoveAction.NoMove);
+					healthBehaviour.IndicatePain();
 				}
+				// TODO: This is an incredibly brutal SFX... it also needs chopping up.
+				// codacy ignore this ->SoundManager.PlayNetworkedAtPos("ShyguyScream", DrawerWorldPosition, sourceObj: gameObject);
 			}
 		}
 
