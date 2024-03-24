@@ -84,7 +84,15 @@ namespace Objects
 
 		public int StoredObjectsCount => storedObjects.Count;
 
-		public event Action<GameObject> ObjectStored;
+		/// <summary>
+		/// Invokes when each individual object is stored within this container.
+		/// </summary>
+		public UnityEvent<GameObject> ObjectStored;
+
+		/// <summary>
+		/// Invokes when each individual object is removed from this container.
+		/// </summary>
+		public UnityEvent<GameObject> ObjectRetrieved;
 
 		#region Lifecycle
 
@@ -98,6 +106,11 @@ namespace Objects
 			{
 				ReparentStoredObjects(registerTile.NetworkedMatrixNetId);
 			});
+		}
+
+		private void OnDestroy()
+		{
+			ObjectStored.RemoveAllListeners();
 		}
 
 		public virtual void OnSpawnServer(SpawnInfo info)
@@ -224,6 +237,7 @@ namespace Objects
 			}
 
 			onDrop?.Invoke();
+			ObjectRetrieved?.Invoke(obj);
 		}
 
 		public void RetrieveObjects(Vector3? worldPosition = null)

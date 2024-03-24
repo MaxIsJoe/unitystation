@@ -35,7 +35,7 @@ namespace Objects.Disposals
 		private void Awake()
 		{
 			ObjectContainer = GetComponent<ObjectContainer>();
-			ObjectContainer.ObjectStored += ObjectStored;
+			ObjectContainer.ObjectStored.AddListener(ObjectStored);
 			gasContainer = GetComponent<GasContainer>();
 #if UNITY_EDITOR
 			struggleChance = 90f;

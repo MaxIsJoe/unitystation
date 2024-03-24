@@ -11,17 +11,17 @@ PrefabInstance:
     - target: {fileID: 83141582606814714, guid: ebb08cf966efc084aa918bd8d9429604,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 83141582606814714, guid: ebb08cf966efc084aa918bd8d9429604,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 83141582606814714, guid: ebb08cf966efc084aa918bd8d9429604,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 951381747229521920, guid: ebb08cf966efc084aa918bd8d9429604,
         type: 3}
@@ -246,6 +246,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6751178667305699581}
+    - targetCorrespondingSourceObject: {fileID: 4197940402254186057, guid: ebb08cf966efc084aa918bd8d9429604,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3363206456413499409}
   m_SourcePrefab: {fileID: 100100000, guid: ebb08cf966efc084aa918bd8d9429604, type: 3}
 --- !u!1 &1876053485803257813 stripped
 GameObject:
@@ -272,7 +276,9 @@ MonoBehaviour:
   ChangeSprites: 0
   isChangingSO: 0
   CurrentDirection: 3
+  SynchroniseCurrentDirection: 0
   IgnoreServerUpdatesIfLocalPlayer: 0
+  MatrixRotateUpdate: 1
   IsAtmosphericDevice: 0
   doNotResetOtherSpriteOptions: 0
 --- !u!114 &2422405172845915658
@@ -317,6 +323,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
+  GasSO: {fileID: 0}
   StoredGasMix:
     GasData:
       GasesArray:
@@ -330,6 +337,7 @@ MonoBehaviour:
   MaximumMoles: 1013.25
   ReleasePressure: 101.325
   CargoSealApproved: 0
+  explodeOnTooMuchDamage: 1
 --- !u!114 &5627962479411611065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,7 +384,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  escapeTime: 24
+  escapeTime: 17
   trayPrefab: {fileID: 6276591062313578460, guid: cb335e9d7c8dce444a0ea88946edbfd8,
     type: 3}
   storePlayers: 1
@@ -389,6 +397,7 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
   burningDamage: 23
+  creamationStorage: {fileID: 3363206456413499409}
 --- !u!114 &6751178667305699581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,6 +413,27 @@ MonoBehaviour:
   initialContents: {fileID: 0}
   spawnContentsAtRoundstart: 1
   registerTile: {fileID: 0}
+  ObjectStored:
+    m_PersistentCalls:
+      m_Calls: []
+  ObjectRetrieved:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &3363206456413499409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1876053485803257813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17aed4adcd5f1734d8192734b1c194fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Storage: {fileID: 6751178667305699581}
+  burningDamage: 25
+  secondsBeforeEachDamage: 1.25
 --- !u!210 &3802493308368489317 stripped
 SortingGroup:
   m_CorrespondingSourceObject: {fileID: 1481169419180323577, guid: ebb08cf966efc084aa918bd8d9429604,

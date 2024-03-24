@@ -2149,12 +2149,17 @@ namespace HealthV2
 
 		public void IndicatePain(float dmgTaken, bool ignoreCooldown = false)
 		{
-			if (EmoteActionManager.Instance == null || screamEmote == null
-			                                        || ConsciousState == ConsciousState.UNCONSCIOUS || IsDead) return;
 			if (ignoreCooldown == false && canScream == false) return;
 			if (dmgTaken < painScreamDamage) return;
-			EmoteActionManager.DoEmote(screamEmote, playerScript.gameObject);
+			IndicatePain();
 			StartCoroutine(ScreamCooldown());
+		}
+
+		public void IndicatePain()
+		{
+			if (EmoteActionManager.Instance == null || screamEmote == null
+			                                        || ConsciousState == ConsciousState.UNCONSCIOUS || IsDead) return;
+			EmoteActionManager.DoEmote(screamEmote, playerScript.gameObject);
 		}
 
 		private IEnumerator ScreamCooldown()
