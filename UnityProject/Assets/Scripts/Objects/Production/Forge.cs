@@ -24,24 +24,27 @@ namespace Objects.Production
 			SparkUtil.TrySpark(gameObject);
 			burningStorage.Storage.OnObjectRetrieved.AddListener(UpdateVisuals);
 			burningStorage.Storage.OnObjectStored.AddListener(UpdateVisuals);
+			burningStorage.OnTurnOff.AddListener(UpdateVisuals);
 		}
 
 
 		public bool WillInteract(HandApply interaction, NetworkSide side)
 		{
-			if (burningStorage.IsBurning) return false;
 			return DefaultWillInteract.Default(interaction, side);
 		}
 
 		public void ServerPerformInteraction(HandApply interaction)
 		{
-			if (interaction.IsAltClick)
-			{
-				ActivateForge();
-			}
 			if (interaction.HandObject != null)
 			{
+				// ObjectContainer does not use the standard Inventory API,
+				// always remove the object first from the inventory before storing; otherwise it will break the player's hand.
+				Inventory.ServerDrop(interaction.HandSlot);
 				burningStorage.Storage.StoreObject(interaction.HandObject);
+			}
+			else
+			{
+				ActivateForge();
 			}
 		}
 
@@ -74,9 +77,15 @@ namespace Objects.Production
 			smokeActive = burningStorage.IsBurning;
 		}
 
+		private void UpdateVisuals()
+		{
+			UpdateVisuals(null);
+		}
+
 		private void UpdateSmokeEffect(bool oldState, bool newState)
 		{
 			forgeSmoke.gameObject.SetActive(newState);
+			forgeSmoke.Play();
 		}
 	}
 }

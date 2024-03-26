@@ -36,17 +36,17 @@ PrefabInstance:
     - target: {fileID: 4039560752263721574, guid: fdb2f97a13e5b31468c170e6847a8d15,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4039560752263721574, guid: fdb2f97a13e5b31468c170e6847a8d15,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4039560752263721574, guid: fdb2f97a13e5b31468c170e6847a8d15,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4039560752263721574, guid: fdb2f97a13e5b31468c170e6847a8d15,
         type: 3}
@@ -114,5 +114,47 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4043358603169337106, guid: fdb2f97a13e5b31468c170e6847a8d15,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8055579425290793952}
   m_SourcePrefab: {fileID: 100100000, guid: fdb2f97a13e5b31468c170e6847a8d15, type: 3}
+--- !u!1 &8086189346554243681 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4043358603169337106, guid: fdb2f97a13e5b31468c170e6847a8d15,
+    type: 3}
+  m_PrefabInstance: {fileID: 5200267118419142003}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8055579425290793952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8086189346554243681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85f61ef9334eff448b907d2bf379cb03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  integrity: {fileID: 8191018917517654933}
+  CookTime: 10
+  CookedProduct: {fileID: 3691045980254115215, guid: 4f94042bb6d4fa5409f6d571aa517a40,
+    type: 3}
+  CookableBy: -1
+  minimumDamage: 15
+  cookingByDamageType: 1
+  cookingByAttackType: 6
+--- !u!114 &8191018917517654933 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4145377823770582758, guid: fdb2f97a13e5b31468c170e6847a8d15,
+    type: 3}
+  m_PrefabInstance: {fileID: 5200267118419142003}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8086189346554243681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f24590037b6b486082fc874d1bfd9d95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

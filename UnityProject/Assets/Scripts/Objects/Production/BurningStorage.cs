@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using HealthV2;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Objects.Production
 {
@@ -13,6 +14,9 @@ namespace Objects.Production
 
 		[SerializeField] private float burningDamage = 10;
 		[SerializeField] private float secondsBeforeEachDamage = 1.25f;
+		[SerializeField] private bool turnOffWhenAllContentsDestroyed = true;
+
+		public UnityEvent OnTurnOff;
 
 		private void Awake()
 		{
@@ -34,12 +38,21 @@ namespace Objects.Production
 				data.item = item;
 				storedObjects.Add(obj, data);
 			}
+			ContentCountCheck();
 		}
 
 		private void RemoveStoredObject(GameObject obj)
 		{
 			storedObjects.Remove(obj);
-			TurnOff();
+			ContentCountCheck();
+		}
+
+		private void ContentCountCheck()
+		{
+			if (Storage.StoredObjectsCount == 0 && turnOffWhenAllContentsDestroyed)
+			{
+				TurnOff();
+			}
 		}
 
 		private void BurnContent()
@@ -63,6 +76,7 @@ namespace Objects.Production
 		{
 			UpdateManager.Remove(CallbackType.PERIODIC_UPDATE, BurnContent);
 			IsBurning = false;
+			OnTurnOff?.Invoke();
 		}
 
 		struct BurningStorageData

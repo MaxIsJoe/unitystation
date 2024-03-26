@@ -36,17 +36,17 @@ PrefabInstance:
     - target: {fileID: 4039560752263721574, guid: fdb2f97a13e5b31468c170e6847a8d15,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4039560752263721574, guid: fdb2f97a13e5b31468c170e6847a8d15,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4039560752263721574, guid: fdb2f97a13e5b31468c170e6847a8d15,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4039560752263721574, guid: fdb2f97a13e5b31468c170e6847a8d15,
         type: 3}
@@ -119,5 +119,47 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4043358603169337106, guid: fdb2f97a13e5b31468c170e6847a8d15,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4682433514611553650}
   m_SourcePrefab: {fileID: 100100000, guid: fdb2f97a13e5b31468c170e6847a8d15, type: 3}
+--- !u!114 &6404995621375414894 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4145377823770582758, guid: fdb2f97a13e5b31468c170e6847a8d15,
+    type: 3}
+  m_PrefabInstance: {fileID: 7017816306865081480}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6447095856050897818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f24590037b6b486082fc874d1bfd9d95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &6447095856050897818 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4043358603169337106, guid: fdb2f97a13e5b31468c170e6847a8d15,
+    type: 3}
+  m_PrefabInstance: {fileID: 7017816306865081480}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4682433514611553650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6447095856050897818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85f61ef9334eff448b907d2bf379cb03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  integrity: {fileID: 6404995621375414894}
+  CookTime: 40
+  CookedProduct: {fileID: 6528180649155309134, guid: df02dcd0aa32f94428019f11dc739ea7,
+    type: 3}
+  CookableBy: -1
+  minimumDamage: 20
+  cookingByDamageType: 1
+  cookingByAttackType: 6
