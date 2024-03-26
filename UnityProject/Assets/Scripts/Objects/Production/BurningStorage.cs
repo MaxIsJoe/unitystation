@@ -8,6 +8,7 @@ namespace Objects.Production
 	public class BurningStorage : MonoBehaviour
 	{
 		public ObjectContainer Storage;
+		public bool IsBurning { get; private set; } = false;
 		private Dictionary<GameObject, BurningStorageData> storedObjects = new Dictionary<GameObject, BurningStorageData>();
 
 		[SerializeField] private float burningDamage = 10;
@@ -15,8 +16,9 @@ namespace Objects.Production
 
 		private void Awake()
 		{
-			Storage.ObjectStored.AddListener(CheckStoredObject);
-			Storage.ObjectRetrieved.AddListener(RemoveStoredObject);
+			if (CustomNetworkManager.IsServer == false) return;
+			Storage.OnObjectStored.AddListener(CheckStoredObject);
+			Storage.OnObjectRetrieved.AddListener(RemoveStoredObject);
 		}
 
 		private void CheckStoredObject(GameObject obj)
@@ -54,11 +56,13 @@ namespace Objects.Production
 		public void TurnOn()
 		{
 			UpdateManager.Add(BurnContent, secondsBeforeEachDamage);
+			IsBurning = true;
 		}
 
 		public void TurnOff()
 		{
 			UpdateManager.Remove(CallbackType.PERIODIC_UPDATE, BurnContent);
+			IsBurning = false;
 		}
 
 		struct BurningStorageData

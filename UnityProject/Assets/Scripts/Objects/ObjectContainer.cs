@@ -7,6 +7,7 @@ using Messages.Server;
 using Mirror;
 using Objects;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Objects
 {
@@ -87,12 +88,12 @@ namespace Objects
 		/// <summary>
 		/// Invokes when each individual object is stored within this container.
 		/// </summary>
-		public UnityEvent<GameObject> ObjectStored;
+		public UnityEvent<GameObject> OnObjectStored;
 
 		/// <summary>
 		/// Invokes when each individual object is removed from this container.
 		/// </summary>
-		public UnityEvent<GameObject> ObjectRetrieved;
+		public UnityEvent<GameObject> OnObjectRetrieved;
 
 		#region Lifecycle
 
@@ -110,7 +111,7 @@ namespace Objects
 
 		private void OnDestroy()
 		{
-			ObjectStored.RemoveAllListeners();
+			OnObjectStored.RemoveAllListeners();
 		}
 
 		public virtual void OnSpawnServer(SpawnInfo info)
@@ -154,7 +155,7 @@ namespace Objects
 		public void StoreObject(GameObject obj, Vector3 offset = new Vector3())
 		{
 			storedObjects.Add(obj, offset);
-			ObjectStored?.Invoke(obj);
+			OnObjectStored?.Invoke(obj);
 			if (obj.TryGetComponent<UniversalObjectPhysics>(out var objectPhysics))
 			{
 				objectPhysics.StoreTo(this);
@@ -237,7 +238,7 @@ namespace Objects
 			}
 
 			onDrop?.Invoke();
-			ObjectRetrieved?.Invoke(obj);
+			OnObjectRetrieved?.Invoke(obj);
 		}
 
 		public void RetrieveObjects(Vector3? worldPosition = null)
@@ -261,7 +262,7 @@ namespace Objects
 			foreach (var kvp in objects)
 			{
 				if (kvp.Key == null) continue;
-				ObjectStored?.Invoke(kvp.Key);
+				OnObjectStored?.Invoke(kvp.Key);
 				storedObjects[kvp.Key] = kvp.Value;
 				kvp.Key.GetComponent<UniversalObjectPhysics>().StoreTo( this );
 			}

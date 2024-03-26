@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Objects;
+﻿using UnityEngine;
 
 /// <summary>
 /// Defines fire sources like candles, lighters or activated welder
