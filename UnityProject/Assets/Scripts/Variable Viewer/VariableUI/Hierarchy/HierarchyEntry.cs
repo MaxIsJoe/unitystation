@@ -134,8 +134,18 @@ namespace AdminTools.VariableViewer
 
 		public void OpenShelf()
 		{
-			RequestBookshelfNetMessage.Send(Shelf.ID, true);
+			if (GUI_P_Component.VVObjectComponentSelectionActive == false)
+			{
+				RequestBookshelfNetMessage.Send(Shelf.ID, true, KeyboardInputManager.IsAltActionKeyPressed());
+			}
+			else
+			{
+				GUI_P_Component.ActiveComponent.SetBookShelf(Shelf.ID);
+				GUI_P_Component.ActiveComponent.Close();
+			}
 		}
+
+
 
 		public void ResetThis()
 		{

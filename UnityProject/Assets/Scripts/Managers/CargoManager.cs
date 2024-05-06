@@ -19,7 +19,7 @@ using Logs;
 
 namespace Systems.Cargo
 {
-	public class CargoManager : MonoBehaviour
+	public partial class CargoManager : MonoBehaviour
 	{
 		public static CargoManager Instance;
 
@@ -62,8 +62,6 @@ namespace Systems.Cargo
 
 		private static readonly List<int> randomJunkPrices = new List<int> { 5, 10, 15 };
 
-		public static List<string> ResearchedArtifacts { get; private set; }
-
 		private void Awake()
 		{
 			if (Instance == null)
@@ -83,11 +81,13 @@ namespace Systems.Cargo
 		private void OnEnable()
 		{
 			UpdateManager.Add(UpdateMe, checkForTimeCooldown);
+			EventManager.AddHandler(Event.PostRoundStarted, CallShuttle);
 		}
 
 		private void OnDisable()
 		{
 			UpdateManager.Remove(CallbackType.PERIODIC_UPDATE, UpdateMe);
+			EventManager.RemoveHandler(Event.PostRoundStarted,  CallShuttle);
 		}
 
 		/// <summary>
@@ -113,6 +113,8 @@ namespace Systems.Cargo
 		{
 			OnRoundRestart();
 		}
+
+
 
 		public void OnRoundRestart()
 		{
@@ -333,6 +335,8 @@ namespace Systems.Cargo
 				}
 			}
 
+			if (obj.TryGetComponent<Paper>(out var paper)) ParseResearchData(paper);
+
 			string exportName;
 			if (attributes != null)
 			{
@@ -538,17 +542,6 @@ namespace Systems.Cargo
 			}
 			OnCreditsUpdate.Invoke();
 			OnCartUpdate.Invoke();
-		}
-
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-		public static void ClearStatics()
-		{
-			ResearchedArtifacts = new List<string>();
-		}
-
-		public static void AddArtifactToList(string ID)
-		{
-			ResearchedArtifacts.Add(ID);
 		}
 
 		public int GetSellPrice(GameObject obj)

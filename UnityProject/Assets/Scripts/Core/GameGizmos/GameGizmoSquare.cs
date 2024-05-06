@@ -6,15 +6,25 @@ public class GameGizmoSquare : GameGizmoTracked
 {
 	public List<LineRenderer> Lines = new List<LineRenderer>();
 
+	public Vector3 Size
+	{
+		set
+		{
+			foreach (var Line in Lines)
+			{
+				Line.transform.localScale = value;
+			}
+		}
+	}
 
-	public void SetUp(GameObject TrackingFrom, Vector3 Position, Color Colour, float LineThickness , float BoxSize = 1)
+	public void SetUp(GameObject TrackingFrom, Vector3 Position, Color Colour, float LineThickness , Vector2 BoxSize)
 	{
 		SetUp(Position, TrackingFrom);
 		foreach (var Line in Lines)
 		{
 			Line.endWidth = LineThickness;
 			Line.startWidth = LineThickness;
-			Line.transform.localScale = new(BoxSize, BoxSize, BoxSize);
+			Line.transform.localScale = BoxSize;
 			Line.startColor = Colour;
 			Line.endColor = Colour;
 		}

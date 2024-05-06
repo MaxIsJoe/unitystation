@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using InGameGizmos;
 using Logs;
 using Messages.Client.DeviceLinkMessage;
 using Shared.Managers;
@@ -75,7 +76,7 @@ public class DeviceRotator : SingletonManager<DeviceRotator>
 
 
 			OriginalDirection = PressedObject.CurrentDirection;
-			CursorLine = GameGizmomanager.AddNewLineStatic(PressedObject.gameObject, Vector3.zero,null ,
+			CursorLine = GameGizmomanager.AddNewLineStaticClient(PressedObject.gameObject, Vector3.zero,null ,
 				MouseUtils.MouseToWorldPos(), Colour);
 		}
 

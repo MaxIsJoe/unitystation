@@ -5,12 +5,10 @@ using Logs;
 using UnityEngine;
 using Mirror;
 using SecureStuff;
-using UnityEngine.Events;
 using UnityEngine.Serialization;
 #if UNITY_EDITOR
 using Unity.EditorCoroutines.Editor;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 #endif
 using UnityEngine.UI;
 
@@ -18,7 +16,7 @@ using UnityEngine.UI;
 ///	<summary>
 ///	for Handling sprite animations
 ///	</summary>
-//[ExecuteInEditMode]
+[ExecuteInEditMode]
 public class SpriteHandler : MonoBehaviour
 {
 	[SerializeField] public bool NetworkThis = true;
@@ -129,6 +127,15 @@ public class SpriteHandler : MonoBehaviour
 			}
 
 			return null;
+		}
+	}
+
+	private void OnBeforeSerialize()
+	{
+		if (PresentSpriteSet != null && PresentSpriteSet.Variance.Count > 0)
+		{
+			animationIndex = 0;
+			PushTexture(false);
 		}
 	}
 
@@ -614,6 +621,7 @@ public class SpriteHandler : MonoBehaviour
 		if (Application.isPlaying)
 		{
 			ParentUniversalObjectPhysics = this.transform.parent.OrNull()?.GetComponent<UniversalObjectPhysics>();
+
 			spriteRenderer = GetComponent<SpriteRenderer>();
 			image = GetComponent<Image>();
 			if (image != null)
@@ -790,6 +798,10 @@ public class SpriteHandler : MonoBehaviour
 			OnSpriteChanged[i].Invoke(value);
 		}
 		OnSpriteUpdated?.Invoke();
+		if (CustomNetworkManager.IsHeadless == false)
+		{
+			ParentUniversalObjectPhysics?.pickupable?.Component?.RefreshUISlotImage();
+		}
 	}
 
 	protected virtual bool HasSpriteInImageComponent()
@@ -909,7 +921,10 @@ public class SpriteHandler : MonoBehaviour
 
 		if (isAnimation == false)
 		{
-			UpdateManager.Remove(CallbackType.LATE_UPDATE, UpdateMe);
+			if (CustomNetworkManager.IsHeadless == false)
+			{
+				UpdateManager.Remove(CallbackType.LATE_UPDATE, UpdateMe);
+			}
 		}
 	}
 
@@ -917,7 +932,10 @@ public class SpriteHandler : MonoBehaviour
 	{
 		InternalChangeSprite(CataloguePage + 1 < SubCatalogue.Count ? CataloguePage + 1 : 0, false);
 		isAnimation = false;
-		UpdateManager.Remove(CallbackType.LATE_UPDATE, UpdateMe);
+		if (CustomNetworkManager.IsHeadless == false)
+		{
+			UpdateManager.Remove(CallbackType.LATE_UPDATE, UpdateMe);
+		}
 	}
 
 	private void SetSprite(SpriteDataSO.Frame frame)
@@ -988,12 +1006,20 @@ public class SpriteHandler : MonoBehaviour
 
 		if (turnOn && isAnimation == false)
 		{
-			UpdateManager.Add(CallbackType.LATE_UPDATE, UpdateMe);
+			if (CustomNetworkManager.IsHeadless == false)
+			{
+				UpdateManager.Add(CallbackType.LATE_UPDATE, UpdateMe);
+			}
+
 			isAnimation = true;
 		}
 		else if (turnOn == false && isAnimation)
 		{
-			UpdateManager.Remove(CallbackType.LATE_UPDATE, UpdateMe);
+			if (CustomNetworkManager.IsHeadless == false)
+			{
+				UpdateManager.Remove(CallbackType.LATE_UPDATE, UpdateMe);
+			}
+
 			animationIndex = 0;
 			isAnimation = false;
 		}

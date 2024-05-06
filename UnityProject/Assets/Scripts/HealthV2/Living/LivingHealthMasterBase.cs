@@ -1566,11 +1566,30 @@ namespace HealthV2
 
 			reagentPoolSystem?.Bleed(reagentPoolSystem.GetTotalBlood());
 
+			SpawnSpeciesProduce(3);
+
 			Death();
 			for (int i = BodyPartList.Count - 1; i >= 0; i--)
 			{
 				if (BodyPartList[i].BodyPartType == BodyPartType.Chest) continue;
 				BodyPartList[i].TryRemoveFromBody(true, PreventGibb_Death: true);
+			}
+		}
+
+		public void SpawnSpeciesProduce(int maximumProduce)
+		{
+			if (InitialSpecies == null) return;
+			if (InitialSpecies.Base.MeatProduce != null)
+			{
+				Spawn.ServerPrefab(InitialSpecies.Base.MeatProduce,
+					gameObject.AssumedWorldPosServer(), count: Random.Range(1, maximumProduce),
+					scatterRadius: 0.5f);
+			}
+			if (InitialSpecies.Base.SkinProduce != null)
+			{
+				Spawn.ServerPrefab(InitialSpecies.Base.SkinProduce,
+					gameObject.AssumedWorldPosServer(), count: Random.Range(1, maximumProduce),
+					scatterRadius: 0.5f);
 			}
 		}
 
@@ -1677,7 +1696,7 @@ namespace HealthV2
 			//Don't continuously produce miasma, only produce max 4 moles on the tile
 			if (node.GasMixLocal.GetMoles(Gas.Miasma) > 4) return;
 
-			node.GasMixLocal.AddGas(Gas.Miasma, AtmosDefines.MIASMA_CORPSE_MOLES);
+			node.GasMixLocal.AddGasWithTemperature(Gas.Miasma, AtmosDefines.MIASMA_CORPSE_MOLES, node.GasMixLocal.Temperature);
 		}
 
 		#region Examine

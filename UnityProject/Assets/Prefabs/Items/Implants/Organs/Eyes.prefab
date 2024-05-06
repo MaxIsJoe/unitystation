@@ -16,6 +16,11 @@ PrefabInstance:
         type: 2}
     - target: {fileID: 1817806423449182988, guid: 35ef0ee8523cfc342bc863c12a3ac07c,
         type: 3}
+      propertyPath: parentID
+      value: 35ef0ee8523cfc342bc863c12a3ac07c
+      objectReference: {fileID: 0}
+    - target: {fileID: 1817806423449182988, guid: 35ef0ee8523cfc342bc863c12a3ac07c,
+        type: 3}
       propertyPath: foreverID
       value: 5c61c3c9e64efa740accb280f8923222
       objectReference: {fileID: 0}
@@ -352,8 +357,10 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
+  RelatedPart: {fileID: 0}
   Pickupable: {fileID: 0}
   BaseBlurryVision: 0
+  DimLightColour: {r: 1, g: 1, b: 1, a: 0.003921569}
   OnBodyID: 0
   PreventsBlindness: 1
   DefaultPreventsBlindness_: 0
@@ -377,6 +384,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
+  RelatedPart: {fileID: 0}
   FlashProtection: {fileID: 11400000, guid: 4f5b7ce1cca0a644cba934af14ea4b2c, type: 2}
   WeldingShieldImplants: 0
   FlashMultiplier: 1

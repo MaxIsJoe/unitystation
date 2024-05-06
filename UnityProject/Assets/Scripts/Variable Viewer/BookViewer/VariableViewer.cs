@@ -19,6 +19,15 @@ using Object = System.Object;
 
 public static class VariableViewer
 {
+	public enum ListModification
+	{
+		NONE,
+		Up,
+		Down,
+		Remove,
+		Add
+	}
+
 	public static void ProcessTile(Vector3 Location, GameObject WhoBy)
 	{
 		Vector3Int worldPosInt = Location.RoundTo2Int().To3Int();
@@ -52,7 +61,7 @@ public static class VariableViewer
 
 	}
 
-	public static void ProcessTransform(Transform transform, GameObject WhoBy, bool RefreshHierarchy = false)
+	public static void ProcessTransform(Transform transform, GameObject WhoBy, bool RefreshHierarchy = false, bool Teleport = false)
 	{
 		if (Librarian.library.TransformToBookShelves.Count == 0)
 		{
@@ -71,10 +80,9 @@ public static class VariableViewer
 		}
 
 
-
 		BookShelf.PopulateBookShelf();
 
-		SendBookShelfToClient(BookShelf,WhoBy);
+		SendBookShelfToClient(BookShelf,WhoBy, Teleport);
 		if (RefreshHierarchy)
 		{
 			LibraryNetMessage.Send(Librarian.library, WhoBy);
@@ -125,9 +133,9 @@ public static class VariableViewer
 		BookNetMessage.Send(Book,ToWho);
 	}
 
-	public static void SendBookShelfToClient(Librarian.Library.LibraryBookShelf BookShelf, GameObject ToWho)
+	public static void SendBookShelfToClient(Librarian.Library.LibraryBookShelf BookShelf, GameObject ToWho, bool Teleport)
 	{
-		SubBookshelfNetMessage.Send(BookShelf, ToWho);
+		SubBookshelfNetMessage.Send(BookShelf, ToWho, Teleport);
 	}
 
 	//Receive from Client side
@@ -179,7 +187,7 @@ public static class VariableViewer
 		}
 	}
 
-	public static void RequestSendBookshelf(ulong BookshelfID, bool IsNewbookBookshelf, GameObject WhoBy)
+	public static void RequestSendBookshelf(ulong BookshelfID, bool IsNewbookBookshelf, GameObject WhoBy, bool RequestTeleport)
 	{
 		if (Librarian.IDToBookShelf.ContainsKey(BookshelfID))
 		{
@@ -198,11 +206,11 @@ public static class VariableViewer
 				{
 					Bookshelf.PopulateBookShelf();
 				}
-				SubBookshelfNetMessage.Send(Bookshelf, WhoBy);
+				SubBookshelfNetMessage.Send(Bookshelf, WhoBy, RequestTeleport);
 			}
 			else
 			{
-				SubBookshelfNetMessage.Send(Bookshelf, WhoBy);
+				SubBookshelfNetMessage.Send(Bookshelf, WhoBy, RequestTeleport);
 			}
 		}
 		else
@@ -226,22 +234,54 @@ public static class VariableViewer
 	}
 
 
-	public static void RequestChangeVariable(ulong PageID, string ChangeTo, bool SendToClient, GameObject WhoBy, string AdminId)
+	public static void RequestChangeVariable(ulong PageID, string ChangeTo, bool SendToClient, GameObject WhoBy, string AdminId, ListModification ListModification = ListModification.NONE  )
+
 	{
 		if (Librarian.IDToPage.ContainsKey(PageID))
 		{
-			UIManager.Instance.adminChatWindows.adminLogWindow.ServerAddChatRecord(
-				WhoBy.name + " Modified " + Librarian.IDToPage[PageID].VariableName + " on " +  Librarian.IDToPage[PageID].BindedTo.Title
-				+ " From " + VVUIElementHandler.Serialise(Librarian.IDToPage[PageID].Variable, Librarian.IDToPage[PageID].VariableType) + " to "+ ChangeTo
-				+ " with Send to clients? " + SendToClient, AdminId);
-			Librarian.IDToPage[PageID].SetValue(ChangeTo);
-			if (SendToClient)
+			if (ListModification == ListModification.NONE)
 			{
-				var monoBehaviour = (Librarian.IDToPage[PageID].BindedTo.BookClass as Component);
-				UpdateClientValue.Send(ChangeTo, Librarian.IDToPage[PageID].VariableName,
-					TypeDescriptor.GetClassName(monoBehaviour),
-					monoBehaviour.gameObject, UpdateClientValue.Modifying.ModifyingVariable );
+				UIManager.Instance.adminChatWindows.adminLogWindow.ServerAddChatRecord(
+					WhoBy.name + " Modified " + Librarian.IDToPage[PageID].VariableName + " on " +  Librarian.IDToPage[PageID].BindedTo.Title
+					+ " From " + VVUIElementHandler.Serialise(Librarian.IDToPage[PageID].Variable, Librarian.IDToPage[PageID].VariableType) + " to "+ ChangeTo
+					+ " with Send to clients? " + SendToClient, AdminId);
+
+				Librarian.IDToPage[PageID].SetValue(ChangeTo);
+				if (SendToClient)
+				{
+					var monoBehaviour = (Librarian.IDToPage[PageID].BindedTo.BookClass as Component);
+					//TODO NOTE Limited to variables Limited to variables that are on mono behaviours, So if yoou have a class inside of your mono behaviour Then you wouldn't be able to modify it,
+					//TODO this is Mainly to do with security and Getting round to doing it, have a look if it's a security concern being able to modify classes with inside of mono behaviours
+					//TODO List modification
+					UpdateClientValue.Send(ChangeTo, Librarian.IDToPage[PageID].VariableName,
+						TypeDescriptor.GetClassName(monoBehaviour),
+						monoBehaviour.gameObject, UpdateClientValue.Modifying.ModifyingVariable );
+				}
 			}
+			else
+			{
+				UIManager.Instance.adminChatWindows.adminLogWindow.ServerAddChatRecord(
+					WhoBy.name + " Modified " + Librarian.IDToPage[PageID].VariableName + " on " +  Librarian.IDToPage[PageID].BindedTo.Title
+					+ " Did modifying action to " + ListModification + " to " + ChangeTo
+					+ " with Send to clients? " + SendToClient, AdminId);
+				switch (ListModification)
+				{
+					case ListModification.Remove:
+						Librarian.IDToPage[PageID].RemoveElement(int.Parse(ChangeTo));
+						break;
+					case ListModification.Up:
+						Librarian.IDToPage[PageID].MoveElementUp(int.Parse(ChangeTo));
+						break;
+					case ListModification.Down:
+						Librarian.IDToPage[PageID].MoveElementDown(int.Parse(ChangeTo));
+						break;
+					case ListModification.Add:
+						Librarian.IDToPage[PageID].AddElement();
+						break;
+				}
+
+			}
+
 		}
 		else
 		{

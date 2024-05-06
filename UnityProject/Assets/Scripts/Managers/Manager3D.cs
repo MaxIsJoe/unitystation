@@ -138,7 +138,6 @@ public class Manager3D : MonoBehaviour
 
 		//Camera.main.GetComponent<LightingSystem>().enabled = false;
 
-		Camera.main.orthographic = false;
 
 
 		var Follow = Camera.main.GetComponent<Camera2DFollow>();
@@ -241,7 +240,7 @@ public class Manager3D : MonoBehaviour
 					foreach (var LayerV in map.Layers)
 					{
 						var Layer = MultilayerPresentTiles[(int)LayerV.Key];
-						if (Layer == null || LayerV.Key.IsUnderFloor() == false) continue;
+						if (Layer == null || LayerV.Key.IsMultilayer() == false) continue;
 
 						if (LayerV.Value.LayerType != LayerType.Objects )
 						{
@@ -265,5 +264,9 @@ public class Manager3D : MonoBehaviour
 			}
 		}
 
+
+		Camera.main.orthographic = false;
+		Camera.main.fieldOfView = 90;
+		Camera.main.nearClipPlane = 0.1f;
 	}
 }

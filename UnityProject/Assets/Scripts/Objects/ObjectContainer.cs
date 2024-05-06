@@ -8,6 +8,7 @@ using Mirror;
 using Objects;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using Systems;
 
 namespace Objects
 {
@@ -29,7 +30,7 @@ namespace Objects
 	/// <summary>
 	/// Allows an object to contain other objects. For example, closets.
 	/// </summary>
-	public class ObjectContainer : MonoBehaviour, IServerLifecycle
+	public class ObjectContainer : MonoBehaviour, IServerLifecycle, IUniversalInventoryAPI
 	{
 		[Header("Initial contents")]
 		[SerializeField]
@@ -306,6 +307,22 @@ namespace Objects
 			}
 
 			return false;
+		}
+
+		public void GrabObjects(List<GameObject> target, Action onGrab = null)
+		{
+			foreach (var obj in target)
+			{
+				if (obj == gameObject) continue;
+				StoreObject(obj, obj.transform.position - transform.position);
+			}
+			onGrab?.Invoke();
+		}
+
+		public void DropObjects(Action onDrop = null)
+		{
+			RetrieveObjects();
+			onDrop?.Invoke();
 		}
 	}
 }

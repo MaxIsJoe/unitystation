@@ -22,6 +22,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 2596862763773197862, guid: e7e1f76c9d673354f923f7906532be5b,
         type: 3}
+      propertyPath: parentID
+      value: e7e1f76c9d673354f923f7906532be5b
+      objectReference: {fileID: 0}
+    - target: {fileID: 2596862763773197862, guid: e7e1f76c9d673354f923f7906532be5b,
+        type: 3}
       propertyPath: foreverID
       value: br7j2ouDZR@E15jDYUKk
       objectReference: {fileID: 0}
@@ -40,7 +45,7 @@ PrefabInstance:
     - target: {fileID: 8817709132636593449, guid: e7e1f76c9d673354f923f7906532be5b,
         type: 3}
       propertyPath: initialName
-      value: Artifact Research Console (Computer Board)
+      value: Anomaly Reporting Console (Computer Board)
       objectReference: {fileID: 0}
     - target: {fileID: 8980409829913530175, guid: e7e1f76c9d673354f923f7906532be5b,
         type: 3}
@@ -70,17 +75,17 @@ PrefabInstance:
     - target: {fileID: 8980409829913530175, guid: e7e1f76c9d673354f923f7906532be5b,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8980409829913530175, guid: e7e1f76c9d673354f923f7906532be5b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8980409829913530175, guid: e7e1f76c9d673354f923f7906532be5b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8980409829913530175, guid: e7e1f76c9d673354f923f7906532be5b,
         type: 3}

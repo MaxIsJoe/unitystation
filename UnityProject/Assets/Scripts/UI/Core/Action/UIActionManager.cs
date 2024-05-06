@@ -140,18 +140,17 @@ namespace UI.Core.Action
 
 		private void InstantToggleServer(GameObject Body, IActionGUI iActionGUI, bool show)
 		{
-			if (CustomNetworkManager.IsServer == false) return;
+			if (CustomNetworkManager.IsServer == false || Body == null) return;
 			if (ActivePlayerActions.ContainsKey(Body) == false)
 			{
 				ActivePlayerActions[Body] = new List<IActionGUI>();
 			}
 
-
 			if (show)
 			{
 				if (ActivePlayerActions[Body].Contains(iActionGUI))
 				{
-					Loggy.LogError("iActionGUI Already present on mind");
+					Loggy.LogWarning($"[UIActionManager/InstantToggleServer()] - iActionGUI Already present on mind for {Body.name}");
 					return;
 				}
 
@@ -169,7 +168,7 @@ namespace UI.Core.Action
 			{
 				if (ActivePlayerActions[Body].Contains(iActionGUI) == false)
 				{
-					Loggy.LogError($"iActionGUI {iActionGUI?.ActionData.OrNull()?.Name}, not present on mind", Category.UI);
+					Loggy.LogWarning($"iActionGUI {iActionGUI?.ActionData.OrNull()?.Name}, not present on mind", Category.UI);
 					return;
 				}
 
@@ -526,7 +525,7 @@ namespace UI.Core.Action
 			{
 				if (MultiActivePlayerActions[body][iActionGUIMulti].Contains(actionData))
 				{
-					Loggy.LogError($"ActionData: {actionData.OrNull()?.Name}, already present on mind");
+					Loggy.LogWarning($"ActionData: {actionData.OrNull()?.Name}, already present on mind");
 					return;
 				}
 
@@ -550,13 +549,13 @@ namespace UI.Core.Action
 			{
 				if (MultiActivePlayerActions[body].ContainsKey(iActionGUIMulti) == false)
 				{
-					Loggy.LogError("iActionGUIMulti Not present on mind");
+					Loggy.LogWarning("iActionGUIMulti Not present on mind");
 					return;
 				}
 
 				if (MultiActivePlayerActions[body][iActionGUIMulti].Contains(actionData) == false)
 				{
-					Loggy.LogError("actionData Not present on mind");
+					Loggy.LogWarning("actionData Not present on mind");
 					return;
 				}
 

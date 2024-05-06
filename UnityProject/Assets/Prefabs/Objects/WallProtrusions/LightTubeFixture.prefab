@@ -107,9 +107,6 @@ MonoBehaviour:
   pushTextureOnStartUp: 1
   initialVariantIndex: 0
   palette: []
-  OnSpriteUpdated:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &8582599332015320669
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,6 +508,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2444135299207855093, guid: b69bfc56f39849d4ba9139d2d51bedb6,
         type: 3}
+      propertyPath: parentID
+      value: b69bfc56f39849d4ba9139d2d51bedb6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2444135299207855093, guid: b69bfc56f39849d4ba9139d2d51bedb6,
+        type: 3}
       propertyPath: foreverID
       value: fde32c02abddc814f9366ff1fb21f234
       objectReference: {fileID: 0}
@@ -866,7 +868,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   CurrentOnColor: {r: 1, g: 0.9899574, b: 0.8443396, a: 0.65882355}
-  EmergencyColour: {r: 0, g: 0, b: 0, a: 0}
+  EmergencyColour: {r: 1, g: 0, b: 0, a: 0.46666667}
   relatedLightSwitch: {fileID: 0}
   InitialState: 1
   mLightRendererObject: {fileID: 0}

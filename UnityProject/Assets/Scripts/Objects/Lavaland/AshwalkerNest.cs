@@ -1,29 +1,43 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Systems.Character;
 using Systems.CraftingV2;
 using Systems.GhostRoles;
 using AddressableReferences;
 using HealthV2;
+using Items;
 using Logs;
 using Managers;
+using Mirror;
 using ScriptableObjects;
+using UI.Systems.Tooltips.HoverTooltips;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Objects
 {
-	public class AshwalkerNest : MonoBehaviour, IServerLifecycle, IExaminable
+	public class AshwalkerNest : NetworkBehaviour, IServerLifecycle, IExaminable, IHoverTooltip
 	{
+		[FormerlySerializedAs("ghostRole")] [SerializeField]
+		private GhostRoleData ashwalkerGhostRole = null;
 		[SerializeField]
-		private GhostRoleData ghostRole = null;
+		private GhostRoleData priestGhostRole = null;
 
 		[SerializeField]
 		private PlayerHealthData ashwalkerRaceData = null;
+
+		[SerializeField]
+		private PlayerHealthData tieflingRaceData = null;
 
 		[SerializeField]
 		private CraftingRecipeList ashwalkerCraftingRecipesList = null;
 
 		[SerializeField]
 		private AddressableAudioSource consumeSound = null;
+
+		[SerializeField]
+		private ItemTrait edibleTraitForTheNest;
 
 		//Meat cost of new eggs
 		[SerializeField]
@@ -41,25 +55,16 @@ namespace Objects
 
 		private int eatingTimer = 0;
 
-		private uint createdRoleKey;
+		private uint createdRoleKeyAshwalker;
+		private uint createdRoleKeyPriest;
 
 		private Integrity integrity;
 		private RegisterTile registerTile;
 		private SpriteHandler spriteHandler;
 
-		private static Vector3Int[] directions = new []
-		{
-			new Vector3Int(0, 1, 0),
-			new Vector3Int(1, 1, 0),
-			new Vector3Int(1, 0, 0),
-			new Vector3Int(1, -1, 0),
-			new Vector3Int(0, -1, 0),
-			new Vector3Int(-1, -1, 0),
-			new Vector3Int(-1, 0, 0),
-			new Vector3Int(-1, 1, 0)
-		};
-
 		private bool wasMapped;
+
+		[SyncVar] private long timeSinceLastSearch = DateTime.Now.Ticks;
 
 		#region Life Cycle
 
@@ -84,7 +89,7 @@ namespace Objects
 			EventManager.RemoveHandler(Event.LavalandFirstEntered, OnRoundRestart);
 
 			//Just in case remove the role here too
-			GhostRoleManager.Instance.ServerRemoveRole(createdRoleKey);
+			GhostRoleManager.Instance.ServerRemoveRole(createdRoleKeyAshwalker);
 		}
 
 		#endregion
@@ -96,57 +101,63 @@ namespace Objects
 			if (eatingTimer > 0)
 			{
 				eatingTimer--;
-
 				if (eatingTimer == 5)
 				{
 					Chat.AddActionMsgToChat(gameObject, "The nest reaches out and searches for food.");
 				}
-
 				return;
 			}
 
 			eatingTimer = timeBetweenEating;
-
-			foreach (var direction in directions)
+			if (SearchAndEatupBodies() == false)
 			{
-				//TODO remove once mobs use new health
-				var oldHealth = registerTile.Matrix.Get<LivingHealthBehaviour>
-					(registerTile.LocalPositionServer + direction, ObjectType.Object, true).ToList();
-
-				if (oldHealth.Count > 0)
-				{
-					var mob = oldHealth[0];
-					if(mob.IsDead == false) continue;
-
-					EatMobBody(mob);
-					return;
-				}
-
-				//TODO change ObjectType.Player after old health removed
-				var newHealth = registerTile.Matrix.Get<LivingHealthMasterBase>
-					(registerTile.LocalPositionServer + direction, ObjectType.Player, true).ToList();
-
-				if (newHealth.Count > 0)
-				{
-					var health = newHealth[0];
-					if(health.IsDead == false) continue;
-
-					EatBody(health);
-					return;
-				}
+				Chat.AddActionMsgToChat(gameObject, "The nest gurgles in displeasure, there was no food to eat.");
 			}
 
-			Chat.AddActionMsgToChat(gameObject, "The nest gurgles in displeasure, there was no food to eat.");
+			timeSinceLastSearch = DateTime.Now.Ticks;
 		}
 
-		private void EatMobBody(LivingHealthBehaviour mobHealth)
+		private bool SearchAndEatupBodies()
 		{
-			mobHealth.Harvest();
-			IncreaseMeat();
+			// LivingHealthBehavior is obselte, don't search for it pls. Only search for MasterBase.
+			var creatures = MatrixManager.GetAdjacent<LivingHealthMasterBase>(gameObject.AssumedWorldPosServer().CutToInt(), true);
+			var organs = MatrixManager.GetAdjacent<ItemAttributesV2>(gameObject.AssumedWorldPosServer().CutToInt(), true);
+			bool ate = false;
+			string smallMeatMsg = $"Serrated tendrils eagerly pull nearby food from the {gameObject.ExpensiveName()}";
+			bool willBeSatisifed = DMMath.Prob(5);
+			if (willBeSatisifed is false) smallMeatMsg += ", but its hunger is never satiated.";
 
-			Chat.AddActionMsgToChat(gameObject, $"Serrated tendrils eagerly pull {mobHealth.gameObject.ExpensiveName()} to " +
-												$"the {gameObject.ExpensiveName()}, tearing the body apart as its blood seeps over the eggs.");
+			//(Max): HEY THERE, IF YOU ARE TRYING TO UPDATE THIS TO BALANCE OUT HOW THE NEST GENERATES 1-3 MORE MEAT PRODUCE AFTER GIBBING A PLAYER
+			//DO NOT CHANGE IT. THERE IS ANOTHER BALANCE UPDATE ALREADY IN THE WORKS FOR MEAT LIFECYCLES AND IT WILL BE PUSHED IN THE FORGE PR.
+			//LEAVE THIS AS IS FOR THE TIME BEING!!
+			foreach (var item in organs)
+			{
+				if (item!= null && item.GetTraits().Contains(edibleTraitForTheNest) == false) continue;
+				_ = Despawn.ServerSingle(item.gameObject);
+				ate = true;
+			}
 
+			if (ate)
+			{
+				Chat.AddActionMsgToChat(gameObject, smallMeatMsg);
+				if (willBeSatisifed) IncreaseMeat();
+			}
+
+			foreach (var creature in creatures)
+			{
+				if (creature.IsDead == false) continue;
+				if (creature.InitialSpecies == ashwalkerRaceData || creature.InitialSpecies == tieflingRaceData)
+				{
+					Chat.AddActionMsgToChat(gameObject,
+						$"The nest grumples violently as it first tries snatching up {creature.playerScript.visibleName}, " +
+						$"but it puts them down as it notices that they're a {creature.InitialSpecies.name}");
+					continue;
+				}
+				EatBody(creature);
+				ate = true;
+			}
+
+			return ate;
 		}
 
 		private void EatBody(LivingHealthMasterBase healthMasterBase)
@@ -167,7 +178,6 @@ namespace Objects
 			}
 
 			healthMasterBase.OnGib();
-
 			Chat.AddActionMsgToChat(gameObject, $"Serrated tendrils eagerly pull {healthMasterBase.gameObject.ExpensiveName()} to " +
 												$"the {gameObject.ExpensiveName()}, tearing the body apart as its blood seeps over the eggs.");
 
@@ -187,7 +197,7 @@ namespace Objects
 			//Increase eggs
 			ashwalkerEggs++;
 			SetSprite();
-			GhostRoleManager.Instance.ServerUpdateRole(createdRoleKey, 1, ashwalkerEggs, -1);
+			GhostRoleManager.Instance.ServerUpdateRole(createdRoleKeyAshwalker, 1, ashwalkerEggs, -1);
 
 			Chat.AddActionMsgToChat(gameObject, "One of the eggs swells to an unnatural size and tumbles free. It's ready to hatch!");
 		}
@@ -208,7 +218,7 @@ namespace Objects
 
 		public void OnDespawnServer(DespawnInfo info)
 		{
-			GhostRoleManager.Instance.ServerRemoveRole(createdRoleKey);
+			GhostRoleManager.Instance.ServerRemoveRole(createdRoleKeyAshwalker);
 		}
 
 		//Would use only IServerSpawn, but that is called before the ghost role manager which wipes the list at RoundStart...
@@ -216,12 +226,16 @@ namespace Objects
 		{
 			SetSprite();
 
-			createdRoleKey = GhostRoleManager.Instance.ServerCreateRole(ghostRole);
-			var role = GhostRoleManager.Instance.serverAvailableRoles[createdRoleKey];
+			createdRoleKeyAshwalker = GhostRoleManager.Instance.ServerCreateRole(ashwalkerGhostRole);
+			createdRoleKeyPriest = GhostRoleManager.Instance.ServerCreateRole(priestGhostRole);
+			var role1 = GhostRoleManager.Instance.serverAvailableRoles[createdRoleKeyAshwalker];
+			var role2 = GhostRoleManager.Instance.serverAvailableRoles[createdRoleKeyPriest];
 
-			GhostRoleManager.Instance.ServerUpdateRole(createdRoleKey, 1, ashwalkerEggs, -1);
+			GhostRoleManager.Instance.ServerUpdateRole(createdRoleKeyAshwalker, 1, ashwalkerEggs, -1);
+			GhostRoleManager.Instance.ServerUpdateRole(createdRoleKeyPriest, 1, 1, -1);
 
-			role.OnPlayerAdded += OnSpawnPlayer;
+			role2.OnPlayerAdded += OnSpawnPlayerPriest;
+			role1.OnPlayerAdded += OnSpawnPlayer;
 
 			EventManager.RemoveHandler(Event.LavalandFirstEntered, OnRoundRestart);
 		}
@@ -231,38 +245,65 @@ namespace Objects
 			SpawnAshwalker(player);
 		}
 
-		private void SpawnAshwalker(PlayerInfo player, bool costEgg = true)
+		private void OnSpawnPlayerPriest(PlayerInfo player)
 		{
-			//Since this is being called from an Action<> this could be null.
+			if (RemovePlayer(player) == false) return;
+			var characterSettings = GenerateWalkerSheet(ashwalkerRaceData);
+			var Ashwalker = PlayerSpawn.NewSpawnCharacterV2(
+				SOAdminJobsList.Instance.GetByName("Ashwalker Priest")
+				,characterSettings);
+			PlayerSpawn.TransferAccountToSpawnedMind(player,Ashwalker);
+			Ashwalker.Body.playerMove.AppearAtWorldPositionServer(registerTile.WorldPosition);
+			// Priests don't need their crafting recpies wiped.
+			var crafting = player.Mind.CurrentPlayScript.PlayerCrafting;
+			foreach (var recipe in ashwalkerCraftingRecipesList.CraftingRecipes)
+			{
+				crafting.LearnRecipe(recipe);
+			}
+			//Decrease the remaining roles
+			GhostRoleManager.Instance.ServerUpdateRole(createdRoleKeyAshwalker, 1, ashwalkerEggs, -1);
+
+			//Remove the player so they can join again once they die
+			GhostRoleManager.Instance.ServerRemoveWaitingPlayer(createdRoleKeyPriest, player);
+
+			Chat.AddExamineMsg(player.GameObject, "You have been risen from the hell fires, with a new body and renewed purpose. Glory to the Necropolis!");
+
+			//Priests cant speak common, but can understand it.
+			player.Mind.CurrentPlayScript.MobLanguages.RemoveLanguage(LanguageManager.Common);
+		}
+
+		private bool RemovePlayer(PlayerInfo player)
+		{
 			if (this == null || gameObject == null)
 			{
 				//Remove the player from all roles (as createdRoleKey will Error)
 				GhostRoleManager.Instance.ServerRemoveWaitingPlayer(player);
 				Loggy.LogError("Ghost role spawn called on null ashwalker, was the role not removed on destruction?");
-				return;
+				return false;
 			}
+			return true;
+		}
 
-
+		private CharacterSheet GenerateWalkerSheet(PlayerHealthData race)
+		{
 			var characterSettings = CharacterSheet.GenerateRandomCharacter();
-
-			characterSettings.Species = ashwalkerRaceData.name;
+			characterSettings.Species = race.name;
 			characterSettings.SerialisedExternalCustom?.Clear();
-
-			characterSettings.SkinTone = CharacterSheet.GetRandomSkinTone(ashwalkerRaceData);
-
-			//Give random lizard name
+			characterSettings.SkinTone = CharacterSheet.GetRandomSkinTone(race);
 			characterSettings.Name = StringManager.GetRandomLizardName(characterSettings.GetGender());
+			return characterSettings;
+		}
 
-			//Respawn the player
-
+		private void SpawnAshwalker(PlayerInfo player, bool costEgg = true)
+		{
+			//Since this is being called from an Action<> this could be null.
+			if (RemovePlayer(player) == false) return;
+			var characterSettings = GenerateWalkerSheet(ashwalkerRaceData);
 			var Ashwalker = PlayerSpawn.NewSpawnCharacterV2(
 				SOAdminJobsList.Instance.GetByName("Ashwalker")
 				,characterSettings);
-
 			PlayerSpawn.TransferAccountToSpawnedMind(player,Ashwalker);
-
 			Ashwalker.Body.playerMove.AppearAtWorldPositionServer(registerTile.WorldPosition);
-
 
 			//Wipe crafting recipes and add Ashwalker ones
 			var crafting = player.Mind.CurrentPlayScript.PlayerCrafting;
@@ -284,10 +325,10 @@ namespace Objects
 			}
 
 			//Decrease the remaining roles
-			GhostRoleManager.Instance.ServerUpdateRole(createdRoleKey, 1, ashwalkerEggs, -1);
+			GhostRoleManager.Instance.ServerUpdateRole(createdRoleKeyAshwalker, 1, ashwalkerEggs, -1);
 
 			//Remove the player so they can join again once they die
-			GhostRoleManager.Instance.ServerRemoveWaitingPlayer(createdRoleKey, player);
+			GhostRoleManager.Instance.ServerRemoveWaitingPlayer(createdRoleKeyAshwalker, player);
 
 			Chat.AddExamineMsg(player.GameObject, "You have been pulled back from beyond the grave, with a new body and renewed purpose. Glory to the Necropolis!");
 
@@ -298,12 +339,46 @@ namespace Objects
 		private void OnDestruction(DestructionInfo info)
 		{
 			Chat.AddActionMsgToChat(gameObject, "As the nest dies, all the eggs explode. There will be no more ashwalkers today!");
-			GhostRoleManager.Instance.ServerRemoveRole(createdRoleKey);
+			GhostRoleManager.Instance.ServerRemoveRole(createdRoleKeyAshwalker);
 		}
 
 		public string Examine(Vector3 worldPos = default(Vector3))
 		{
-			return $"There {(ashwalkerEggs == 1 ? "is" : "are")} {ashwalkerEggs} egg{(ashwalkerEggs == 1 ? "" : "s")} in the nest.";
+			var msg = $"There {(ashwalkerEggs == 1 ? "is" : "are")} {ashwalkerEggs} egg{(ashwalkerEggs == 1 ? "" : "s")} in the nest.";
+			long currentTimeTicks = DateTime.Now.Ticks;
+			long elapsedTicks = currentTimeTicks - timeSinceLastSearch;
+			double elapsedSeconds = (double)elapsedTicks / TimeSpan.TicksPerSecond;
+			msg += "\n\n" + $"it's been {elapsedSeconds} seconds since its last meal.";
+			return msg;
+		}
+
+		public string HoverTip()
+		{
+			return Examine();
+		}
+
+		public string CustomTitle()
+		{
+			return null;
+		}
+
+		public Sprite CustomIcon()
+		{
+			return null;
+		}
+
+		public List<Sprite> IconIndicators()
+		{
+			return null;
+		}
+
+		public List<TextColor> InteractionsStrings()
+		{
+			List<TextColor> textColors = new List<TextColor>
+			{
+				new TextColor() {Text = "Leave dead bodies or uncooked meat near the nest to feed it.", Color = Color.red}
+			};
+			return textColors;
 		}
 	}
 }

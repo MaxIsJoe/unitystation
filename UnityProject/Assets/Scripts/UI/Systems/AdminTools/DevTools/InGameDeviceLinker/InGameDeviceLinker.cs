@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using InGameGizmos;
 using Logs;
 using Messages.Client.DeviceLinkMessage;
 using Messages.Client.DevSpawner;
@@ -125,7 +126,7 @@ public class InGameDeviceLinker : SingletonManager<InGameDeviceLinker>
 
 	public void SetupGizmosFor(IMultitoolMasterable ShowFor)
 	{
-		MasterOrigin = GameGizmomanager.AddNewSquareStatic(ShowFor.gameObject, Vector3.zero, Color.cyan);
+		MasterOrigin = GameGizmomanager.AddNewSquareStaticClient(ShowFor.gameObject, Vector3.zero, Color.cyan);
 
 
 		foreach (var Device in MastersData[ShowFor.ConType][ShowFor])
@@ -139,7 +140,7 @@ public class InGameDeviceLinker : SingletonManager<InGameDeviceLinker>
 			// else
 			// {
 				if (Device.Master == null) continue; //TODO Gizmo for not connected
-				LinkGizmo[Device] = GameGizmomanager.AddNewLineStatic(Device.gameObject, Vector3.zero,
+				LinkGizmo[Device] = GameGizmomanager.AddNewLineStaticClient(Device.gameObject, Vector3.zero,
 					ShowFor.gameObject,
 					Vector3.zero, Color.green);
 			//}
@@ -238,7 +239,7 @@ public class InGameDeviceLinker : SingletonManager<InGameDeviceLinker>
 			if (Select)
 			{
 				SetupGizmosFor(cursorObject.SelectedMaster);
-				CursorLine = GameGizmomanager.AddNewLineStatic(cursorObject.SelectedMaster.gameObject, Vector3.zero,
+				CursorLine = GameGizmomanager.AddNewLineStaticClient(cursorObject.SelectedMaster.gameObject, Vector3.zero,
 					cursorObject.gameObject,
 					Vector3.zero, new Color(1f, 0f, 1f, 1f));
 			}
@@ -291,7 +292,7 @@ public class InGameDeviceLinker : SingletonManager<InGameDeviceLinker>
 						else if (Slave.Master != cursorObject.SelectedMaster || Slave.Master == null)
 						{
 							Slave.SetMasterEditor(cursorObject.SelectedMaster);
-							LinkGizmo[Slave] = GameGizmomanager.AddNewLineStatic(Slave.gameObject, Vector3.zero,
+							LinkGizmo[Slave] = GameGizmomanager.AddNewLineStaticClient(Slave.gameObject, Vector3.zero,
 								cursorObject.SelectedMaster.gameObject,
 								Vector3.zero, Color.green);
 

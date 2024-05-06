@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using InGameGizmos;
 using Logs;
 using Shared.Managers;
 using UnityEngine;
@@ -87,7 +88,7 @@ public class DeviceMover : SingletonManager<DeviceMover>
 
 		StartPositionWorld = MouseUtils.MouseToWorldPos();
 		ColorUtility.TryParseHtmlString("#1E00FF", out var Colour);
-		CursorLine = GameGizmomanager.AddNewLineStatic(null, MouseUtils.MouseToWorldPos(), null,
+		CursorLine = GameGizmomanager.AddNewLineStaticClient(null, MouseUtils.MouseToWorldPos(), null,
 			MouseUtils.MouseToWorldPos(), Colour);
 	}
 

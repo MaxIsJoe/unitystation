@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Logs;
 using UnityEngine;
 
 public class EtherealThing : MonoBehaviour, IServerSpawn
@@ -8,9 +9,8 @@ public class EtherealThing : MonoBehaviour, IServerSpawn
 
 	public Pickupable Pickupable;
 
-	public Vector3 SavedLocalPosition;
 
-	public bool InIted = false;
+	private bool InIted = false;
 
 	public void OnSpawnServer(SpawnInfo info)
 	{
@@ -53,8 +53,6 @@ public class EtherealThing : MonoBehaviour, IServerSpawn
 		}
 
 		var RegisterTile = this.GetComponent<RegisterTile>();
-		var localPosition = this.transform.localPosition;
-		SavedLocalPosition = localPosition;
 		RegisterTile.Matrix.MetaDataLayer.EtherealThings.Add(this);
 	}
 }

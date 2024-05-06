@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -129,6 +130,7 @@ namespace SecureStuff
 					IDToPage[Page.ID] = Page;
 					Page.Sentences = new Librarian.Sentence();
 					Page.Sentences.SentenceID = Page.ASentenceID;
+					Page.Sentences.OnPageID = Page.ID;
 					Page.ASentenceID++;
 					var attribute = Field.GetCustomAttributes(typeof(VVNote), true);
 					if (attribute.Length > 0)
@@ -136,6 +138,13 @@ namespace SecureStuff
 						var VVNoteAttributes = attribute.Cast<VVNote>().ToArray()[0];
 						Page.VVHighlight = VVNoteAttributes.variableHighlightl;
 					}
+
+					attribute = Field.GetCustomAttributes(typeof(Mirror.SyncVarAttribute), true);
+					if (attribute.Length > 0)
+					{
+						Page.VVHighlight = VVHighlight.UnsafeToModify;
+					}
+
 
 					GenerateSentenceValuesforSentence(Page.Sentences, Field.FieldType, Page, Script, FInfo: Field);
 					Book.BindedPagesAdd(Page);
@@ -189,6 +198,13 @@ namespace SecureStuff
 						{
 							var VVNoteAttributes = attribute.Cast<VVNote>().ToArray()[0];
 							Page.VVHighlight = VVNoteAttributes.variableHighlightl;
+						}
+						else
+						{
+							if (Page.VariableName.StartsWith("Network"))
+							{
+								Page.VVHighlight = VVHighlight.SafeToModify;
+							}
 						}
 
 						GenerateSentenceValuesforSentence(Page.Sentences, Properties.PropertyType, Page, Script,
@@ -269,7 +285,6 @@ namespace SecureStuff
 									Sentence _sentence = new Sentence();
 									_sentence.ValueVariable = c;
 									_sentence.OnPageID = Page.ID;
-									_sentence.PagePosition = count;
 									_sentence.ValueVariableType = c.GetType();
 									_sentence.SentenceID = Page.ASentenceID;
 									Page.ASentenceID++;
@@ -326,7 +341,6 @@ namespace SecureStuff
 							Sentence _sentence = new Sentence();
 							_sentence.ValueVariable = c;
 							_sentence.OnPageID = Page.ID;
-							_sentence.PagePosition = count;
 							_sentence.ValueVariableType = c.GetType();
 							_sentence.SentenceID = Page.ASentenceID;
 							Page.ASentenceID++;
@@ -802,7 +816,7 @@ namespace SecureStuff
 			public Book BindedTo;
 			public PropertyInfo PInfo;
 			public bool PCanWrite => PInfo.CanWrite;
-			public bool FCanWrite => Info.IsLiteral == false;
+			public bool FCanWrite => Info.IsLiteral == false && Info.IsInitOnly == false;
 
 			public FieldInfo Info;
 
@@ -814,10 +828,103 @@ namespace SecureStuff
 			public Dictionary<uint, Sentence> IDtoSentence = new Dictionary<uint, Sentence>();
 			public VVHighlight VVHighlight = VVHighlight.None;
 
+
 			public override string ToString()
 			{
 				return (VariableName + " = " + Variable + " of   " + VariableType);
 			}
+
+			public void AddElement()
+			{
+				if (HubValidation.TrustedMode == false) return;
+				var list = (IList) Variable;
+
+				var Ttype = this.VariableType.GetGenericArguments()[0];
+
+				var NewIndex = list.Count; //It's okay because we are adding one and it becomes a new index
+
+				object Object = null;
+
+				if (Ttype.IsSubclassOf(typeof(UnityEngine.Object)))
+				{
+					//No constructor we can use
+					list.Add(null);
+					Object = null;
+				}
+				else
+				{
+					Object = Activator.CreateInstance(Ttype);
+					list.Add(Object);
+				}
+
+
+				Sentence _sentence = new Sentence();
+				_sentence.ValueVariable = Object;
+				_sentence.OnPageID = this.ID;
+				_sentence.ValueVariableType = Ttype;
+				_sentence.SentenceID = this.ASentenceID;
+				this.ASentenceID++;
+				this.IDtoSentence[_sentence.SentenceID] = _sentence;
+				Type valueType = Ttype;
+				if (valueType.IsGenericType)
+				{
+					Type baseType = valueType.GetGenericTypeDefinition();
+					if (baseType == typeof(KeyValuePair<,>))
+					{
+						_sentence.KeyVariable = valueType.GetProperty("Key").GetValue(Object, null);
+						_sentence.ValueVariable = valueType.GetProperty("Value").GetValue(Object, null);
+
+						_sentence.ValueVariableType = valueType.GetGenericArguments()[1];
+						_sentence.KeyVariableType = valueType.GetGenericArguments()[0];
+					}
+				}
+
+				if (valueType.IsClass == false)
+				{
+					GenerateSentenceValuesforSentence(_sentence, Ttype, this, Object);
+				}
+
+			    this.Sentences.Sentences.Add(_sentence);
+			}
+
+
+			public void RemoveElement(int ID)
+			{
+				if (HubValidation.TrustedMode == false) return;
+				var Data = IDtoSentence[(uint) ID ];
+				IDtoSentence.Remove((uint) ID);
+				var list = (IList) Variable; // Cast `Variable` to ICollection interface
+				list.Remove(Data.ValueVariable); // Call the appropriate removal method based on the underlying implementation
+			}
+
+
+			public void MoveElementUp(int ID)
+			{
+				if (HubValidation.TrustedMode == false) return;
+				IList variable = (IList) Variable;
+
+				var Data = IDtoSentence[(uint) ID ];
+				var CurrentIndex = variable.IndexOf(Data.ValueVariable);;
+				var MovingToIndex = CurrentIndex - 1;
+				var Swapping = variable[MovingToIndex];
+				variable[MovingToIndex] = variable[CurrentIndex];
+				variable[CurrentIndex] = Swapping;
+			}
+
+			public void MoveElementDown(int ID)
+			{
+				if (HubValidation.TrustedMode == false) return;
+
+
+				IList variable = (IList) Variable;
+				var Data = IDtoSentence[(uint) ID ];
+				var CurrentIndex = variable.IndexOf(Data.ValueVariable);
+				var MovingToIndex = CurrentIndex + 1;
+				var Swapping = variable[MovingToIndex];
+				variable[MovingToIndex] = variable[CurrentIndex];
+				variable[CurrentIndex] = Swapping;
+			}
+
 
 			public void SetValue(string Value)
 			{
@@ -829,12 +936,12 @@ namespace SecureStuff
 				{
 					if (PInfo != null)
 					{
-						object DeSerialised = DeSerialiseValue(Variable, Value, Variable.GetType());
+						object DeSerialised = DeSerialiseValue(Variable, Value, VariableType);
 						PInfo.SetValue(BindedTo.BookClass, DeSerialised);
 					}
 					else if (Info != null)
 					{
-						object DeSerialised = DeSerialiseValue(Variable, Value, Variable.GetType());
+						object DeSerialised = DeSerialiseValue(Variable, Value, VariableType);
 						Info.SetValue(BindedTo.BookClass, DeSerialised);
 					}
 
@@ -853,7 +960,16 @@ namespace SecureStuff
 				if (HubValidation.TrustedMode == false) return;
 				if (MInfo != null)
 				{
-					MInfo.Invoke(BindedTo.BookClass, null);
+					try
+					{
+						MInfo.Invoke(BindedTo.BookClass,
+							BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static |
+							BindingFlags.FlattenHierarchy, (Binder) null, null, (CultureInfo) null);
+					}
+					catch (Exception e)
+					{
+						Loggy.LogError(e.ToString());
+					}
 				}
 			}
 
@@ -933,7 +1049,6 @@ namespace SecureStuff
 		public sealed class Sentence
 		{
 			public uint SentenceID;
-			public uint PagePosition;
 			public object KeyVariable;
 			public Type KeyVariableType;
 
