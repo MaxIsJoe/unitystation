@@ -20,6 +20,8 @@ public class PositionalHandApply : HandApply
 	/// <summary>Target world position calculated from matrix local position.</summary>
 	public Vector2 WorldPositionTarget => (Vector2) TargetPosition.To3().ToWorld(Performer.OrNull()?.RegisterTile().OrNull()?.Matrix);
 
+	public Matrix PerformerIsOnMatrix => Performer.OrNull()?.RegisterTile()?.Matrix;
+
 	/// <param name="performer">The gameobject of the player performing the drop interaction</param>
 	/// <param name="handObject">Object in the player's active hand. Null if player's hand is empty.</param>
 	/// <param name="targetVector">vector pointing from performer position to the spot they are targeting</param>

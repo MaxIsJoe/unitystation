@@ -112,4 +112,14 @@ public static class VectorExtensions
 		}
 		return offset;
 	}
+
+	public static MetaDataNode GetMedaDataNode(this Vector3Int localPos, Matrix matrix)
+	{
+		return matrix.GetMetaDataNode(localPos);
+	}
+
+	public static MetaDataNode GetMedaDataNode(this Vector2Int localPos, Matrix matrix)
+	{
+		return matrix.GetMetaDataNode(localPos);
+	}
 }

@@ -38,8 +38,13 @@ public class Mop : MonoBehaviour, ICheckedInteractable<PositionalHandApply>, IEx
 	public bool WillInteract(PositionalHandApply interaction, NetworkSide side)
 	{
 		if (DefaultWillInteract.Default(interaction, side) == false) return false;
+		if (side == NetworkSide.Server)
+		{
+			var node = interaction.TargetPosition.To3Int().GetMedaDataNode(interaction.PerformerIsOnMatrix);
+			if (node != null && node.ReagentsOnTile.Total > 1) return true;
+		}
 		//can only mop tiles
-		if (!Validations.HasComponent<InteractableTiles>(interaction.TargetObject)) return false;
+		if (Validations.HasComponent<InteractableTiles>(interaction.TargetObject) == false) return false;
 
 		return true;
 	}
