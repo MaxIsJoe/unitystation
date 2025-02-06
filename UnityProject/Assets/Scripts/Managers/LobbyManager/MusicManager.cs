@@ -60,7 +60,9 @@ namespace Audio.Containers
 		public static void StopMusic()
 		{
 			Instance.musicAudioSource.Stop();
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
 			Synth.Instance.StopMusic();
+#endif
 		}
 
 		/// <summary>
@@ -128,12 +130,16 @@ namespace Audio.Containers
 			musicAudioSource.mute = mute;
 			if (mute)
 			{
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
 				Synth.Instance.SetMusicVolume(Byte.MinValue);
+#endif
 			}
 			else
 			{
 				var vol = 255 * Instance.MusicVolume;
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
 				Synth.Instance.SetMusicVolume((byte) (int) vol);
+#endif
 			}
 		}
 
@@ -145,7 +151,7 @@ namespace Audio.Containers
 		{
 			if (Instance.musicAudioSource != null
 			    && Instance.musicAudioSource.isPlaying
-			    || (SunVox.SunVox.sv_end_of_song((int) Slot.Music) != 0))
+			    || (isMusicPlaying()))
 			{
 				return true;
 			}
@@ -153,6 +159,16 @@ namespace Audio.Containers
 			{
 				return false;
 			}
+		}
+
+		private bool IsSunVoxEndOfSong()
+		{
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
+			return SunVox.SunVox.sv_end_of_song((int) Slot.Music) != 0;
+else
+			return false;
+#endif
+			return false;
 		}
 
 		public void ChangeVolume(float newVolume)

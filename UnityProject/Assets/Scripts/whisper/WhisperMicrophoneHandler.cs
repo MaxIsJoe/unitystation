@@ -5,11 +5,14 @@ using SecureStuff;
 using Shared.Managers;
 using UI.Chat_UI;
 using UnityEngine;
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
 using Whisper;
 using Whisper.Utils;
+#endif
 
 public class WhisperMicrophoneHandler : SingletonManager<WhisperMicrophoneHandler>
 {
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
 	[HideInInspector] public MicrophoneRecord microphoneRecord;
 	private string _buffer;
 	[HideInInspector] public WhisperManager whisper;
@@ -110,4 +113,5 @@ public class WhisperMicrophoneHandler : SingletonManager<WhisperMicrophoneHandle
 			PostToChatMessage.Send(text, ChatChannel.OOC, languageId: 0,Voice:  PlayerManager.LocalMindScript.CurrentCharacterSettings.Voice);
 		}
 	}
+#endif
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections;
 using System.IO;
 using Initialisation;
@@ -15,6 +16,16 @@ public enum Slot
 
 public class Synth : MonoBehaviour, IInitialise
 {
+	public InitialisationSystems Subsystem => InitialisationSystems.Synth;
+	void IInitialise.Initialise()
+	{
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
+		Init();
+		FxModule = LoadFxInstrument("Keys/fm1.sunsynth");
+#endif
+	}
+
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
 	public static Synth Instance;
 
 	///sampler module id 5 is hardcoded
@@ -40,13 +51,6 @@ public class Synth : MonoBehaviour, IInitialise
 				}
 			}
 		} //else gets destroyed by parent
-	}
-	public InitialisationSystems Subsystem => InitialisationSystems.Synth;
-
-	void IInitialise.Initialise()
-	{
-		Init();
-		FxModule = LoadFxInstrument("Keys/fm1.sunsynth");
 	}
 
 	private void Init()
@@ -276,4 +280,5 @@ public class Synth : MonoBehaviour, IInitialise
 
 		SunVox.SunVox.sv_deinit();
 	}
+#endif
 }

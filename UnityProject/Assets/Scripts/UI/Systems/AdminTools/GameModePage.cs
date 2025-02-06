@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using AdminCommands;
-using Messages.Client.Admin;
-
 
 namespace AdminTools
 {
 	public class GameModePage : AdminPage
 	{
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
 		[SerializeField]
 		private Text currentText = null;
 		[SerializeField]
@@ -33,8 +31,6 @@ namespace AdminTools
 			VoiceChatManager.Instance.OnEnabledChange -= UpdateisVoiceChat;
 
 		}
-
-
 
 		public void UpdateisVoiceChat()
 		{
@@ -110,5 +106,6 @@ namespace AdminTools
 		{
 			AdminCommandsManager.Instance.CmdToggleOOCMute();
 		}
+#endif
 	}
 }

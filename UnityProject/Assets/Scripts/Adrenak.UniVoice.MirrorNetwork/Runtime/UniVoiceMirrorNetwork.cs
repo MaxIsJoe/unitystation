@@ -1,4 +1,4 @@
-
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
 using System;
 using System.IO;
 using System.Linq;
@@ -422,3 +422,4 @@ namespace Adrenak.UniVoice.MirrorNetwork {
         }
     }
 }
+#endif

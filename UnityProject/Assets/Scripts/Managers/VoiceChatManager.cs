@@ -1,13 +1,16 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
 using Adrenak.BRW;
 using Adrenak.UniMic;
 using Adrenak.UniVoice;
 using Adrenak.UniVoice.AudioSourceOutput;
 using Adrenak.UniVoice.MirrorNetwork;
 using Adrenak.UniVoice.UniMicInput;
+#endif
 using Initialisation;
 using Logs;
 using Messages.Client;
@@ -19,7 +22,12 @@ using UnityEngine;
 
 public class VoiceChatManager : NetworkBehaviour, IInitialise
 {
+	public InitialisationSystems Subsystem => InitialisationSystems.VoiceChat;
 
+	public void Initialise()
+	{
+	}
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
 	//preferences
 	//TODO Volume??
 	//TODO chat Icon when someone is speaking
@@ -172,10 +180,5 @@ public class VoiceChatManager : NetworkBehaviour, IInitialise
 		NetworkManager.singleton.transport.OnServerDisconnected += UniVoiceMirrorNetwork.Server_OnClientDisconnected;
 
 	}
-
-	public InitialisationSystems Subsystem => InitialisationSystems.VoiceChat;
-
-	public void Initialise()
-	{
-	}
+#endif
 }

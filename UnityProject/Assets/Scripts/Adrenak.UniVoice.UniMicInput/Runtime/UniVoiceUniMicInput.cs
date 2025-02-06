@@ -1,5 +1,5 @@
-﻿using System;
-
+﻿#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
+using System;
 using Adrenak.UniMic;
 using Logs;
 using UnityEngine;
@@ -58,3 +58,4 @@ namespace Adrenak.UniVoice.UniMicInput {
         }
     }
 }
+#endif

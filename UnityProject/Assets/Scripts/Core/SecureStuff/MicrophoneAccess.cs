@@ -1,3 +1,4 @@
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,3 +81,4 @@ namespace SecureStuff
 		}
 	}
 }
+#endif

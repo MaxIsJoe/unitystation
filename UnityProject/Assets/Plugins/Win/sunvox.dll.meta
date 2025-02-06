@@ -2,7 +2,7 @@ fileFormatVersion: 2
 guid: f2b73be6e8e8beb4ab9578d1b5fc4998
 PluginImporter:
   externalObjects: {}
-  serializedVersion: 2
+  serializedVersion: 3
   iconMap: {}
   executionOrder: {}
   defineConstraints: []
@@ -11,9 +11,11 @@ PluginImporter:
   isExplicitlyReferenced: 0
   validateReferences: 1
   platformData:
-  - first:
-      : Any
-    second:
+    Android:
+      enabled: 0
+      settings:
+        CPU: ARMv7
+    Any:
       enabled: 0
       settings:
         Exclude Android: 1
@@ -22,81 +24,34 @@ PluginImporter:
         Exclude Linux64: 0
         Exclude LinuxUniversal: 0
         Exclude OSXUniversal: 0
-        Exclude WebGL: 0
+        Exclude WebGL: 1
         Exclude Win: 1
         Exclude Win64: 0
-  - first:
-      Android: Android
-    second:
-      enabled: 0
-      settings:
-        CPU: ARMv7
-  - first:
-      Any: 
-    second:
-      enabled: 0
-      settings: {}
-  - first:
-      Editor: Editor
-    second:
+    Editor:
       enabled: 1
       settings:
         CPU: AnyCPU
         DefaultValueInitialized: true
         OS: AnyOS
-  - first:
-      Facebook: Win
-    second:
+    Linux64:
+      enabled: 1
+      settings:
+        CPU: AnyCPU
+    OSXUniversal:
+      enabled: 1
+      settings:
+        CPU: AnyCPU
+    WebGL:
       enabled: 0
-      settings:
-        CPU: None
-  - first:
-      Facebook: Win64
-    second:
-      enabled: 0
-      settings:
-        CPU: AnyCPU
-  - first:
-      Standalone: Linux
-    second:
-      enabled: 1
-      settings:
-        CPU: x86
-  - first:
-      Standalone: Linux64
-    second:
-      enabled: 1
-      settings:
-        CPU: AnyCPU
-  - first:
-      Standalone: LinuxUniversal
-    second:
-      enabled: 1
-      settings:
-        CPU: AnyCPU
-  - first:
-      Standalone: OSXUniversal
-    second:
-      enabled: 1
-      settings:
-        CPU: AnyCPU
-  - first:
-      Standalone: Win
-    second:
-      enabled: 0
-      settings:
-        CPU: None
-  - first:
-      Standalone: Win64
-    second:
-      enabled: 1
-      settings:
-        CPU: AnyCPU
-  - first:
-      WebGL: WebGL
-    second:
-      enabled: 1
       settings: {}
+    Win:
+      enabled: 0
+      settings:
+        CPU: None
+    Win64:
+      enabled: 1
+      settings:
+        CPU: AnyCPU
   userData: 
   assetBundleName: 
   assetBundleVariant: 

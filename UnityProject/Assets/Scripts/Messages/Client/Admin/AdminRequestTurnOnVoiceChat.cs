@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
 using Mirror;
-using UnityEngine;
 
 namespace Messages.Client.Admin
 {
@@ -32,3 +30,4 @@ namespace Messages.Client.Admin
 		}
 	}
 }
+#endif

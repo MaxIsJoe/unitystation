@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
 using Adrenak.UniVoice;
 using Mirror;
-using UnityEngine;
 
 namespace Messages.Client
 {
@@ -29,3 +27,4 @@ namespace Messages.Client
 
 	}
 }
+#endif

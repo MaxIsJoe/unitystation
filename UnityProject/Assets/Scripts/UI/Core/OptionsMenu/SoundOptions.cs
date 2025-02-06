@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Audio.Managers;
-using Audio.Containers;
+﻿using Audio.Containers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -11,6 +9,7 @@ namespace Unitystation.Options
 {
 	public class SoundOptions : MonoBehaviour
 	{
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
 		[SerializeField]
 		private Slider ambientSlider = null;
 
@@ -163,5 +162,6 @@ namespace Unitystation.Options
 				"Reset"
 			);
 		}
+#endif
 	}
 }

@@ -19,8 +19,6 @@ namespace UI.Chat_UI
 {
 	public class ChatUI : SingletonManager<ChatUI>
 	{
-
-
 		public GameObject chatInputWindow = default;
 		public Transform content = default;
 		public GameObject chatEntryPrefab = default;
@@ -453,6 +451,7 @@ namespace UI.Chat_UI
 
 		public void OnToggleSTT()
 		{
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
 			WhisperMicrophoneHandler.Instance.gameObject.SetActive(!WhisperMicrophoneHandler.Instance.gameObject.activeSelf);
 
 			if (WhisperMicrophoneHandler.Instance.gameObject.activeSelf)
@@ -463,6 +462,7 @@ namespace UI.Chat_UI
 			{
 				SpeechToTextImageText.color = Color.white;
 			}
+#endif
 		}
 
 		//This is an editor interface trigger event, do not delete

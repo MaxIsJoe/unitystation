@@ -9,6 +9,7 @@ using SecureStuff;
 
 namespace Adrenak.UniMic {
     public class Mic : MonoBehaviour {
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
         // ================================================
         #region MEMBERS
         // ================================================
@@ -261,5 +262,6 @@ namespace Adrenak.UniMic {
             }
         }
         #endregion
+#endif
     }
 }

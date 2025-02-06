@@ -1,7 +1,6 @@
-﻿#if UNITY_EDITOR
+﻿#if UNITY_EDITOR && (UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX)
 
 using UnityEditor;
-
 using UnityEngine;
 
 namespace Adrenak.UniMic {

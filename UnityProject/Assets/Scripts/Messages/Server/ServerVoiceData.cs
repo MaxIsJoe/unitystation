@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using Adrenak.BRW;
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
 using Adrenak.UniVoice;
-using Logs;
 using Mirror;
-using UnityEngine;
 
 namespace Messages.Server
 {
@@ -62,3 +58,4 @@ namespace Messages.Server
 
 	}
 }
+#endif

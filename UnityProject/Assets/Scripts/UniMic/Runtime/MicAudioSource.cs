@@ -1,13 +1,17 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 
-namespace Adrenak.UniMic {
+namespace Adrenak.UniMic
+{
     /// <summary>
-    /// A simple AudioSource based component that just plays what 
+    /// A simple AudioSource based component that just plays what
     /// the <see cref="Mic"/> instance is receiving.
     /// Provides optional feature to start the recording by itself (as a testing tool)
     /// </summary>
     [RequireComponent(typeof(AudioSource))]
-    public class MicAudioSource : MonoBehaviour {
+    public class MicAudioSource : MonoBehaviour
+    {
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
         public bool startRecordingAutomatically = true;
         [Header("If startRecordingAutomatically is true:")]
         public int recordingFrequency = 44000;
@@ -29,6 +33,6 @@ namespace Adrenak.UniMic {
                 audioSource.Play();
             };
         }
+#endif
     }
-
 }
