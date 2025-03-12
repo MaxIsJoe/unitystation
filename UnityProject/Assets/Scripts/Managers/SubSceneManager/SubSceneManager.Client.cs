@@ -146,8 +146,8 @@ public partial class SubSceneManager
 		ClientObserver.Clear();
 		UIManager.Display.preRoundWindow.CloseMapLoadingPanel();
 		ClientSideFinishAction = null;
-		GUI_PreRoundWindow.Instance?.OnClientLoadUpdateStatus?.Invoke($"Client Finished Loading.");
-		OnFinish.Invoke();
+		GUI_PreRoundWindow.Instance?.OnClientLoadUpdateStatus?.Invoke($"Client Finished Loading subscenes.");
+		OnFinish?.Invoke();
 	}
 
 

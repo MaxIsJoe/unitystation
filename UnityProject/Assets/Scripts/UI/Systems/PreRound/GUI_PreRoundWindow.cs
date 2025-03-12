@@ -85,6 +85,7 @@ namespace UI
 			{
 				Instance = this;
 				OnClientLoadUpdateStatus += UpdateDetailedLoadingText;
+				EventManager.AddHandler(Event.ScenesLoadedServer, SetUIForCountdown);
 			}
 			else
 			{
@@ -199,7 +200,7 @@ namespace UI
 				started, endTime, NetworkTime.time);
 			countdownEndTime = endTime;
 			doCountdown = started;
-			if (started)
+			if (started && SubSceneManager.Instance.ServerInitialLoadingComplete)
 			{
 				SetUIForCountdown();
 				// Update the timer now so it doesn't flash 0:00

@@ -44,32 +44,38 @@ public partial class SubSceneManager
 		}
 
 		Loggy.Info(" Loading space ");
+		loadTimer.IncrementLoadBar("Loading Space");
 		yield return StartCoroutine(ServerLoadSpaceScene(loadTimer));
 
 		//Choose and load a mainstation
 		Loggy.Info(" Loading main station ");
+		loadTimer.IncrementLoadBar("Loading Main Map");
 		yield return StartCoroutine(ServerLoadMainStation(loadTimer));
 
 		if (GameManager.Instance.QuickLoad == false)
 		{
+			loadTimer.IncrementLoadBar("Loading Extras (0/4)");
 			Loggy.Info(" Loading Asteroids ");
 			//Load Asteroids:
 			yield return StartCoroutine(ServerLoadAsteroids(loadTimer));
+			loadTimer.IncrementLoadBar("Loading Extras (1/4)");
 			Loggy.Info(" Loading AwaySite ");
 			//Load away site:
 			yield return StartCoroutine(ServerLoadAwaySite(loadTimer));
 
 			Loggy.Info(" Loading CentCom ");
+			loadTimer.IncrementLoadBar("Loading Extras (2/4)");
 			//Load CentCom Scene:
 			yield return StartCoroutine(ServerLoadCentCom(loadTimer));
 			//Load Additional Scenes:
-
+			loadTimer.IncrementLoadBar("Loading Extras (3/4)");
 			Loggy.Info(" Loading AdditionalScenes ");
 			yield return StartCoroutine(ServerLoadAdditionalScenes(loadTimer));
+			loadTimer.IncrementLoadBar("Loading Extras (4/4)");
 		}
 
 		SubSceneManagerNetworked.netIdentity.isDirty = true;
-		EventManager.Broadcast(Event.ReadyToInitialiseMatrices, false);
+		EventManager.Broadcast(Event.ReadyToInitialiseMatrices, true);
 		SubSceneManagerNetworked.ScenesInitialLoadingComplete = true;
 
 		Loggy.Info(" waiting for MatrixManager.IsInitialized");

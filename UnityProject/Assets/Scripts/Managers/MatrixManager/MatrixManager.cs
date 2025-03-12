@@ -52,7 +52,7 @@ public partial class MatrixManager : SingletonManager<MatrixManager>
 
 	public List<MatrixInfo> MovableMatrices { get; private set; } = new List<MatrixInfo>();
 
-	public static bool IsInitialized = true;
+	public static bool IsInitialized = false;
 	public event Action OnActiveMatricesChange;
 
 	/// <summary>
@@ -86,6 +86,12 @@ public partial class MatrixManager : SingletonManager<MatrixManager>
 	}
 
 	private bool ClientWaitingRoutine = false;
+
+	public override void Awake()
+	{
+		base.Awake();
+		IsInitialized = false;
+	}
 
 	public override void Start()
 	{
@@ -299,6 +305,7 @@ public partial class MatrixManager : SingletonManager<MatrixManager>
 
 	private IEnumerator WaitForAllMatrices()
 	{
+		if (IsInitialized) yield break;
 		while (AreAllMatrixReady() == false)
 		{
 			yield return null;
