@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using TileMap.Behaviours;
-using Tilemaps.Behaviours.Layers;
 using TileManagement;
 using Tiles;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using Logs;
 using Random = UnityEngine.Random;
 using Newtonsoft.Json;
 using SecureStuff;
-using MapSaver;
 using Cysharp.Threading.Tasks;
 
 namespace Systems.ProcGen
@@ -35,21 +32,21 @@ namespace Systems.ProcGen
 		[SerializeField] private float lacunarity = 2f;
 
 		[Header("Tile Settings")]
-		[SerializeField] private LayerTile floorTile;
+		[SerializeField] private List<LayerTile> floorTile = new();
 		[SerializeField] private LayerTile wallTile;
 		[SerializeField] private LayerTile spaceTile;
 		[SerializeField] private float wallThreshold = 0.6f;
 		[SerializeField] private float floorThreshold = 0.3f;
 
-		[Header("Blueprint Settings")]
-		[SerializeField] private List<string> blueprintFiles = new List<string>(); // JSON files to load blueprints from
+		[Header("Blueprint Settings")] [SerializeField]
+		private List<string> blueprintFiles = new List<string>();
 		[SerializeField] private float blueprintChance = 0.1f;
-		[SerializeField] private int minBlueprintDistance = 5; // Minimum distance between blueprints
+		[SerializeField] private int minBlueprintDistance = 5;
 		[SerializeField] private bool loadBlueprintsOnStart = true;
 
 		[Header("Preservation Settings")]
-		[SerializeField] private bool preserveExistingTiles = true; // Whether to skip tiles that already exist
-		[SerializeField] private bool skipBlueprintsOnConflict = true; // Whether to skip blueprints that conflict with existing tiles
+		[SerializeField] private bool preserveExistingTiles = true;
+		[SerializeField] private bool blueprintsCanOverrideExistingStuff = true;
 
 		[Header("Debug")]
 		[SerializeField] private bool showDebugInfo = false;
@@ -62,16 +59,21 @@ namespace Systems.ProcGen
 		private List<Vector2Int> blueprintPositions = new List<Vector2Int>();
 		private List<ProcGenBlueprint> loadedBlueprints = new List<ProcGenBlueprint>();
 
-		public override int Priority => 10; // High priority to ensure it initializes early
+		public override int Priority => 100; // High priority to ensure it initializes early
+
+		private float offsetX;
+		private float offsetY;
 
 		public override void Initialize()
 		{
 			if (!enableProceduralGeneration) return;
 
-			// Initialize random with seed
 			random = seed == 0 ? new System.Random() : new System.Random(seed);
 
-			// Cache components
+			// Perlin noise offsets so terrain varies by seed
+			offsetX = (float)random.NextDouble() * 10000f;
+			offsetY = (float)random.NextDouble() * 10000f;
+
 			tileChangeManager = GetComponentInParent<TileChangeManager>();
 			metaTileMap = GetComponentInParent<MetaTileMap>();
 
@@ -81,17 +83,15 @@ namespace Systems.ProcGen
 				return;
 			}
 
-			// Set default tiles if not assigned
-			if (floorTile == null)
-				floorTile = TileManager.GetTile(TileType.Floor, "Floor") as LayerTile;
+			if (floorTile.Count == 0)
+				floorTile.Add(TileManager.GetTile(TileType.Floor, "GrassFloor") as LayerTile);
 			if (wallTile == null)
-				wallTile = TileManager.GetTile(TileType.Wall, "Wall") as LayerTile;
+				wallTile = TileManager.GetTile(TileType.Wall, "iron_wall") as LayerTile;
 			if (spaceTile == null)
-				spaceTile = TileManager.GetTile(TileType.Effects, "Space") as LayerTile;
+				spaceTile = TileManager.GetTile(TileType.Effects, "ERROR") as LayerTile;
 
 			Loggy.Info($"[ProcGen] Initialized with chunk size: {chunkSize}, load distance: {loadDistance}");
 
-			// Load blueprints if enabled
 			if (loadBlueprintsOnStart)
 			{
 				_ = LoadBlueprintsFromFiles();
@@ -100,15 +100,11 @@ namespace Systems.ProcGen
 
 		private void Update()
 		{
-			if (!enableProceduralGeneration || !CustomNetworkManager.IsServer) return;
-
-			// Check for players and manage chunks
+			if (enableProceduralGeneration == false|| CustomNetworkManager.IsServer == false) return;
 			ManageChunksAroundPlayers();
 		}
 
-		/// <summary>
-		/// Loads blueprints from JSON files using the same approach as SubSceneManager
-		/// </summary>
+
 		private async UniTask LoadBlueprintsFromFiles()
 		{
 			if (blueprintFiles.Count == 0)
@@ -123,18 +119,14 @@ namespace Systems.ProcGen
 
 				try
 				{
-					// Check if file exists in Maps folder
 					if (AccessFile.Exists(blueprintFile, true, FolderType.Maps, false))
 					{
-						// Load the JSON content
 						string json = AccessFile.Load(blueprintFile, FolderType.Maps);
 
-						// Deserialize to MapData (same format as regular maps)
 						MapSaver.MapSaver.MapData mapData = JsonConvert.DeserializeObject<MapSaver.MapSaver.MapData>(json);
 
 						if (mapData != null && mapData.ContainedMatrices.Count > 0)
 						{
-							// Convert MapData to ProcGenBlueprint
 							foreach (var matrixData in mapData.ContainedMatrices)
 							{
 								var blueprint = ConvertMapDataToBlueprint(matrixData, blueprintFile);
@@ -174,7 +166,6 @@ namespace Systems.ProcGen
 				tiles = new List<ProcGenTileData>()
 			};
 
-			// Process tile data from the map
 			if (matrixData.GitFriendlyTileMapData != null)
 			{
 				foreach (var xy in matrixData.GitFriendlyTileMapData.XYs)
@@ -226,7 +217,6 @@ namespace Systems.ProcGen
 				}
 			}
 
-			// Load new chunks (existing chunks are never unloaded)
 			foreach (var chunkPos in chunksToLoad)
 			{
 				if (!loadedChunks.ContainsKey(chunkPos) && !generatingChunks.Contains(chunkPos))
@@ -243,16 +233,9 @@ namespace Systems.ProcGen
 		{
 			generatingChunks.Add(chunkPos);
 
-			// Create chunk data
 			var chunk = new ProcGenChunk(chunkPos, chunkSize);
-
-			// Generate terrain using noise
 			GenerateTerrain(chunk);
-
-			// Check for blueprint placement
 			CheckForBlueprintPlacement(chunk);
-
-			// Apply chunk to tilemap
 			await ApplyChunkToTilemap(chunk);
 
 			// Register chunk as loaded
@@ -278,8 +261,6 @@ namespace Systems.ProcGen
 				{
 					var worldPos = chunk.GetWorldPosition(x, y);
 					var noiseValue = noiseMap[x, y];
-
-					// Determine tile type based on noise value
 					LayerTile tileToPlace = null;
 
 					if (noiseValue > wallThreshold)
@@ -288,7 +269,7 @@ namespace Systems.ProcGen
 					}
 					else if (noiseValue > floorThreshold)
 					{
-						tileToPlace = floorTile;
+						tileToPlace = floorTile.PickRandom();
 					}
 					else
 					{
@@ -314,8 +295,8 @@ namespace Systems.ProcGen
 			{
 				for (int y = 0; y < size; y++)
 				{
-					var worldX = (chunkPos.x * size + x) / noiseScale;
-					var worldY = (chunkPos.y * size + y) / noiseScale;
+					var worldX = (chunkPos.x * size + x) / noiseScale + offsetX;
+					var worldY = (chunkPos.y * size + y) / noiseScale + offsetY;
 
 					var amplitude = 1f;
 					var frequency = 1f;
@@ -360,10 +341,9 @@ namespace Systems.ProcGen
 		/// </summary>
 		private void CheckForBlueprintPlacement(ProcGenChunk chunk)
 		{
-			if (loadedBlueprints.Count == 0 || Random.Range(0f, 1f) > blueprintChance) return;
+			if (loadedBlueprints.Count == 0 || random.NextDouble() > blueprintChance) return;
 
-			// Find a suitable position for blueprint
-			var blueprint = loadedBlueprints[Random.Range(0, loadedBlueprints.Count)];
+			var blueprint = loadedBlueprints.PickRandom();
 			if (blueprint == null) return;
 
 			// Check if we're far enough from other blueprints
@@ -378,7 +358,6 @@ namespace Systems.ProcGen
 				}
 			}
 
-			// Place blueprint
 			PlaceBlueprint(chunk, blueprint);
 			blueprintPositions.Add(chunkPos2D);
 		}
@@ -396,29 +375,25 @@ namespace Systems.ProcGen
 
 			// Check if blueprint can fit without overwriting existing tiles (if preservation is enabled)
 			bool canPlaceBlueprint = true;
-			if (skipBlueprintsOnConflict)
+			foreach (var tileData in blueprint.tiles)
 			{
-				foreach (var tileData in blueprint.tiles)
+				var x = centerX + tileData.offset.x;
+				var y = centerY + tileData.offset.y;
+
+				if (x >= 0 && x < chunk.Size && y >= 0 && y < chunk.Size)
 				{
-					var x = centerX + tileData.offset.x;
-					var y = centerY + tileData.offset.y;
+					var worldPos = chunk.GetWorldPosition(x, y);
+					var localPos = metaTileMap.WorldToCell(worldPos);
 
-					if (x >= 0 && x < chunk.Size && y >= 0 && y < chunk.Size)
+					// If there's already a tile here, we can't place this blueprint
+					if (blueprintsCanOverrideExistingStuff == false && metaTileMap.HasTile(localPos))
 					{
-						var worldPos = chunk.GetWorldPosition(x, y);
-						var localPos = metaTileMap.WorldToCell(worldPos);
-
-						// If there's already a tile here, we can't place this blueprint
-						if (metaTileMap.HasTile(localPos))
-						{
-							canPlaceBlueprint = false;
-							break;
-						}
+						canPlaceBlueprint = false;
+						break;
 					}
 				}
 			}
 
-			// Only place the blueprint if it doesn't conflict with existing tiles (or if conflict checking is disabled)
 			if (canPlaceBlueprint)
 			{
 				foreach (var tileData in blueprint.tiles)
@@ -484,11 +459,8 @@ namespace Systems.ProcGen
 		/// </summary>
 		private void UnloadChunk(Vector2Int chunkPos)
 		{
-			if (!loadedChunks.ContainsKey(chunkPos)) return;
+			if (loadedChunks.TryGetValue(chunkPos, out var chunk) == false) return;
 
-			var chunk = loadedChunks[chunkPos];
-
-			// Remove tiles from tilemap
 			for (int x = 0; x < chunk.Size; x++)
 			{
 				for (int y = 0; y < chunk.Size; y++)
@@ -529,7 +501,7 @@ namespace Systems.ProcGen
 			if (!enableProceduralGeneration) return;
 
 			var testChunk = new Vector2Int(0, 0);
-			if (!loadedChunks.ContainsKey(testChunk) && !generatingChunks.Contains(testChunk))
+			if (loadedChunks.ContainsKey(testChunk) == false && generatingChunks.Contains(testChunk) == false)
 			{
 				_ = GenerateChunk(testChunk);
 			}
@@ -556,16 +528,6 @@ namespace Systems.ProcGen
 		{
 			preserveExistingTiles = !preserveExistingTiles;
 			Loggy.Info($"[ProcGen] Tile preservation {(preserveExistingTiles ? "enabled" : "disabled")}");
-		}
-
-		/// <summary>
-		/// Toggles blueprint conflict checking (useful for testing)
-		/// </summary>
-		[ContextMenu("Toggle Blueprint Conflict Checking")]
-		public void ToggleBlueprintConflictChecking()
-		{
-			skipBlueprintsOnConflict = !skipBlueprintsOnConflict;
-			Loggy.Info($"[ProcGen] Blueprint conflict checking {(skipBlueprintsOnConflict ? "enabled" : "disabled")}");
 		}
 
 #if UNITY_EDITOR

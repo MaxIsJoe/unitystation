@@ -29,7 +29,7 @@ PrefabInstance:
     - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
         type: 3}
       propertyPath: wallThreshold
-      value: 0.8
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
         type: 3}
@@ -41,6 +41,179 @@ PrefabInstance:
       propertyPath: blueprintChance
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: floorTile.Array.size
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 7f63e5c2bb219bf468f50301834d8880,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 26898b997a0de5c4d8e7b9a33b7d6f45,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 21683232701a60a49ac8c100e97b1405,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 5f44d5bb5f1fde3469b860c723e58f27,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 5a2ccb93baee6584fb23d2b3e0cacfa0,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[5]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 2287166d748b56d4886eb06ee6e8e746,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[6]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 260633b2eeee61447970ebfae51c9d28,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[7]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 95be060c6fc42cb4ca3981b91cd9a747,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[8]'
+      value: 
+      objectReference: {fileID: 11400000, guid: d3ba33de8ef37b64f991d12607c7eb4a,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[9]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 38f6e5b1408ac0f4b8b2c26b5da21f7a,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[10]'
+      value: 
+      objectReference: {fileID: 11400000, guid: a1a12980c3280b544adfb80b2724a7bf,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[11]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 1c8ef2bcce51e244ca9eba86f26be9ef,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[12]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 0dbc05343f6e8b241a4fb730f420d884,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[13]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 2ba847836baad694495518ad7626264e,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[14]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 3596ab552b1b54d4b949635ff1ac6ce7,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[15]'
+      value: 
+      objectReference: {fileID: 11400000, guid: e4f313d3a8dd7c148b716dd993b51104,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[16]'
+      value: 
+      objectReference: {fileID: 11400000, guid: f30f435be70f05d41894e497ce7aaeab,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[17]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 4cd7ab4304707544aae097066a3f9dac,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[18]'
+      value: 
+      objectReference: {fileID: 11400000, guid: dc041c91915a5774ba98fc61509fec50,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[19]'
+      value: 
+      objectReference: {fileID: 11400000, guid: ccbbfe531228d8f42b301f15460ed8fd,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[20]'
+      value: 
+      objectReference: {fileID: 11400000, guid: ea04f70a50d7991489cae515b81bfc45,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[21]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 4e8d3df7bc390ea4296e70345a7265fb,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[22]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 8bf72af0112c26140833b42e7956f489,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[23]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 9263a4ffa0e71cb40b04f64292649584,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[24]'
+      value: 
+      objectReference: {fileID: 11400000, guid: b01007667a056e84a85d10c673389743,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[25]'
+      value: 
+      objectReference: {fileID: 11400000, guid: fe939f165177964458ffb808c578c1f2,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[26]'
+      value: 
+      objectReference: {fileID: 11400000, guid: d18ec0982c652404aa76930a8f780495,
+        type: 2}
+    - target: {fileID: -114424910610912963, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
+        type: 3}
+      propertyPath: 'floorTile.Array.data[27]'
+      value: 
+      objectReference: {fileID: 11400000, guid: fd310401c7c7298458ee46d2f27a4be1,
+        type: 2}
     - target: {fileID: 220054419368050924, guid: 6decd4714a41f9f48ba1d1d94b26a7ad,
         type: 3}
       propertyPath: parentID

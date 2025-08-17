@@ -116,7 +116,8 @@ MonoBehaviour:
   octaves: 4
   persistence: 0.5
   lacunarity: 2
-  floorTile: {fileID: 11400000, guid: a9311d952c9bab0aaa8ec6302678ca95, type: 2}
+  floorTile:
+  - {fileID: 11400000, guid: a9311d952c9bab0aaa8ec6302678ca95, type: 2}
   wallTile: {fileID: 11400000, guid: 1ec636767a0cb4345ae5b04db72da5a5, type: 2}
   spaceTile: {fileID: 11400000, guid: fee448277305c9c44bc107a4f1d1f34b, type: 2}
   wallThreshold: 0.6
@@ -219,5 +220,7 @@ MonoBehaviour:
   blueprintChance: 0.1
   minBlueprintDistance: 5
   loadBlueprintsOnStart: 1
+  preserveExistingTiles: 1
+  skipBlueprintsOnConflict: 1
   showDebugInfo: 1
   showChunkBounds: 1
