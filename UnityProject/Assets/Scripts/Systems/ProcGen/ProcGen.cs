@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TileMap.Behaviours;
@@ -13,6 +12,7 @@ using Random = UnityEngine.Random;
 using Newtonsoft.Json;
 using SecureStuff;
 using MapSaver;
+using Cysharp.Threading.Tasks;
 
 namespace Systems.ProcGen
 {
@@ -94,7 +94,7 @@ namespace Systems.ProcGen
 			// Load blueprints if enabled
 			if (loadBlueprintsOnStart)
 			{
-				StartCoroutine(LoadBlueprintsFromFiles());
+				_ = LoadBlueprintsFromFiles();
 			}
 		}
 
@@ -109,12 +109,12 @@ namespace Systems.ProcGen
 		/// <summary>
 		/// Loads blueprints from JSON files using the same approach as SubSceneManager
 		/// </summary>
-		private IEnumerator LoadBlueprintsFromFiles()
+		private async UniTask LoadBlueprintsFromFiles()
 		{
 			if (blueprintFiles.Count == 0)
 			{
 				Loggy.Info("[ProcGen] No blueprint files specified");
-				yield break;
+				return;
 			}
 
 			foreach (var blueprintFile in blueprintFiles)
@@ -157,7 +157,7 @@ namespace Systems.ProcGen
 				}
 
 				// Yield to prevent blocking
-				yield return null;
+				await UniTask.Yield();
 			}
 
 			Loggy.Info($"[ProcGen] Loaded {loadedBlueprints.Count} blueprints total");
@@ -231,7 +231,7 @@ namespace Systems.ProcGen
 			{
 				if (!loadedChunks.ContainsKey(chunkPos) && !generatingChunks.Contains(chunkPos))
 				{
-					StartCoroutine(GenerateChunk(chunkPos));
+					_ = GenerateChunk(chunkPos);
 				}
 			}
 		}
@@ -239,7 +239,7 @@ namespace Systems.ProcGen
 		/// <summary>
 		/// Generates a chunk at the specified position
 		/// </summary>
-		private IEnumerator GenerateChunk(Vector2Int chunkPos)
+		private async UniTask GenerateChunk(Vector2Int chunkPos)
 		{
 			generatingChunks.Add(chunkPos);
 
@@ -253,7 +253,7 @@ namespace Systems.ProcGen
 			CheckForBlueprintPlacement(chunk);
 
 			// Apply chunk to tilemap
-			yield return ApplyChunkToTilemap(chunk);
+			await ApplyChunkToTilemap(chunk);
 
 			// Register chunk as loaded
 			loadedChunks[chunkPos] = chunk;
@@ -446,7 +446,7 @@ namespace Systems.ProcGen
 		/// <summary>
 		/// Applies a chunk's tiles to the tilemap, preserving existing tiles
 		/// </summary>
-		private IEnumerator ApplyChunkToTilemap(ProcGenChunk chunk)
+		private async UniTask ApplyChunkToTilemap(ProcGenChunk chunk)
 		{
 			for (int x = 0; x < chunk.Size; x++)
 			{
@@ -474,7 +474,7 @@ namespace Systems.ProcGen
 				// Yield every few tiles to prevent frame drops
 				if (x % 8 == 0)
 				{
-					yield return null;
+					await UniTask.Yield();
 				}
 			}
 		}
@@ -531,7 +531,7 @@ namespace Systems.ProcGen
 			var testChunk = new Vector2Int(0, 0);
 			if (!loadedChunks.ContainsKey(testChunk) && !generatingChunks.Contains(testChunk))
 			{
-				StartCoroutine(GenerateChunk(testChunk));
+				_ = GenerateChunk(testChunk);
 			}
 		}
 
