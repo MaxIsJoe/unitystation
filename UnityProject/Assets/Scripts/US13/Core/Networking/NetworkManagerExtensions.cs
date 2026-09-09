@@ -49,7 +49,7 @@ namespace US13.Core.Networking
 		{
 			if (!isServer)
 			{
-				NetworkClient.RegisterHandler(new Action<NetworkConnection, U>(message.PreProcess));
+				NetworkClient.RegisterHandlerObsolete(new Action<NetworkConnection, U>(message.PreProcess));
 			}
 			else
 			{

@@ -319,11 +319,11 @@
       "hash": "275406258aca21fe7753cf0724a65f06fd464eea"
     },
     "org.unitystation.spacemirror": {
-      "version": "https://github.com/unitystation/Mirror.git?path=/Assets/Mirror#CleanBranch",
+      "version": "https://github.com/unitystation/Mirror.git?path=/Assets/Mirror#update-2-6.5",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "de0de60348eb69acac596226e1878118f57116b7"
+      "hash": "dd6afc733f8dedbfbfacd8274606d5bc84edb1b4"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
