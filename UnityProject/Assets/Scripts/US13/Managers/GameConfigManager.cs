@@ -140,6 +140,8 @@ namespace US13.Managers
 		public float ExplosionStepTimeInSeconds = 0.14f;
 		public float MinimumThrustStrengthToKnockdownPlayers = 0.85f;
 
+		public bool EnableReactionsGuide = true;
+
 		//physics
 		public float ObjectBouncynessMultiplier = 1f;
 		public float FrictionMultiplier = 1f;

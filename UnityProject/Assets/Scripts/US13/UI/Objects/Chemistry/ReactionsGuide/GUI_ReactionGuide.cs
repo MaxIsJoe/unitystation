@@ -8,6 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using US13.Core.Modular;
+using US13.Managers;
 using US13.Managers.NetworkManagement;
 using US13.ScriptableObjects;
 using US13.UI.Objects.Chemistry.ReactionsGuide.Atoms;
@@ -53,6 +54,11 @@ namespace US13.UI.Objects.Chemistry.ReactionsGuide
 
 		private void Awake()
 		{
+			if (GameConfigManager.GameConfig.EnableReactionsGuide == false)
+			{
+				this.SetActive(false);
+				return;
+			}
 			if (CustomNetworkManager.IsHeadless) return;
 			if (GrabAllReactionsFromParent() == false || CheckNothingIsMissing() == false)
 			{
@@ -67,6 +73,15 @@ namespace US13.UI.Objects.Chemistry.ReactionsGuide
 		{
 			SearchBarField.onSubmit.RemoveAllListeners();
 			SearchButton.onClick.RemoveAllListeners();
+		}
+
+		private void OnEnable()
+		{
+			// can be disabled by an admin mid-game.
+			if (GameConfigManager.GameConfig.EnableReactionsGuide == false)
+			{
+				this.SetActive(false);
+			}
 		}
 
 		private bool CheckNothingIsMissing()

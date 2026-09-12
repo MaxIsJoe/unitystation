@@ -18,7 +18,10 @@
   },
   "Gameplay.Shuttles": {
     "MinimumThrustStrengthToKnockdownPlayers": 0.85
-},
+  },
+  "Gameplay.Meta": {
+    "EnableReactionsGuide": true
+  },
   "Admin": {
     "AdminOnlyHtml": true,
     "NumberOfLogsToStore": null
