@@ -1204,6 +1204,8 @@ MonoBehaviour:
   ReactionListContainer: {fileID: 2021944573031779163}
   PageNumberText: {fileID: 1416625722067095882}
   NumberOfReactionsText: {fileID: 6425656774731620409}
+  SearchBarField: {fileID: 2140986395234850707}
+  SearchButton: {fileID: 1112339968963623394}
   reactionsToDisplay: []
   ReactionEntryTemplate: {fileID: 5881325195007326126, guid: 8866e78d0fb6f2d43ba0ec4db65baf07,
     type: 3}

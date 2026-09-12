@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using US13.Core.Modular;
 using Util;
 
 namespace US13.UI.Objects.Chemistry.ReactionsGuide.Atoms
@@ -15,16 +16,18 @@ namespace US13.UI.Objects.Chemistry.ReactionsGuide.Atoms
 
 		public GameObject ReagentButtonsList;
 
-		public void Initialize(Reaction reaction)
+		public void Initialize(Reaction reaction, IReagentDispenser reagentDispenser)
 		{
 			SplatColorImage.color = reaction.GetReactionColor();
 			DisplayName.text = string.IsNullOrEmpty(reaction.DisplayName) ? reaction.name : $"{reaction.DisplayName}";
 			ReagentButtonsList.DestroyAllChildren();
-			foreach (var ingredient in reaction.ingredients.Keys)
+			foreach (Reagent ingredient in reaction.ingredients.Keys)
 			{
 				var newButton = Instantiate(ReagentButtonTemplate, ReagentButtonsList.transform);
 				var buttonText = newButton.GetComponentInChildren<TMP_Text>();
 				buttonText.text = string.IsNullOrEmpty(ingredient.Name) ? ingredient.name : $"{ingredient.Name}";
+				var button = newButton.GetComponent<Button>();
+				button.onClick.AddListener(() => reagentDispenser.DispenseChemical(ingredient));
 			}
 		}
 	}

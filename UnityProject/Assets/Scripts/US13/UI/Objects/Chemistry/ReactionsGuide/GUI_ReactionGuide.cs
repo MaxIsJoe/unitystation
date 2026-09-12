@@ -35,6 +35,8 @@ namespace US13.UI.Objects.Chemistry.ReactionsGuide
 		[BoxGroup("Setup")] public GameObject ReactionListContainer;
 		[BoxGroup("Setup")] public TMP_Text PageNumberText;
 		[BoxGroup("Setup")] public TMP_Text NumberOfReactionsText;
+		[BoxGroup("Setup")] public TMP_InputField SearchBarField;
+		[BoxGroup("Setup")] public Button SearchButton;
 
 		[SerializeField, HideIf(nameof(DisplayAllReactions))]
 		private List<Reaction> reactionsToDisplay = new();
@@ -50,12 +52,19 @@ namespace US13.UI.Objects.Chemistry.ReactionsGuide
 
 		private void Awake()
 		{
-
 			if (GrabAllReactionsFromParent() == false || CheckNothingIsMissing() == false)
 			{
 				Loggy.Error("GUI_ReactionGuide is missing required components. Please check the inspector.");
 				return;
 			}
+			SearchBarField?.onSubmit.AddListener(SearchReactions);
+			SearchButton?.onClick.AddListener(() => SearchReactions(SearchBarField.text));
+		}
+
+		private void OnDestroy()
+		{
+			SearchBarField.onSubmit.RemoveAllListeners();
+			SearchButton.onClick.RemoveAllListeners();
 		}
 
 		private bool CheckNothingIsMissing()
@@ -131,7 +140,7 @@ namespace US13.UI.Objects.Chemistry.ReactionsGuide
 				var reactionDisplay = reactionEntry.GetComponent<ReactionDisplay>();
 				if (reactionDisplay != null)
 				{
-					reactionDisplay.Initialize(reaction);
+					reactionDisplay.Initialize(reaction, ReagentDispenser);
 				}
 			}
 		}
@@ -150,6 +159,28 @@ namespace US13.UI.Objects.Chemistry.ReactionsGuide
 			{
 				UpdatePage(currentReactionPageOffset - 1);
 			}
+		}
+
+		public void SearchReactions(string searchTerm)
+		{
+			if (string.IsNullOrWhiteSpace(searchTerm))
+			{
+				if (DisplayAllReactions == false)
+				{
+					GrabAllReactionsFromParent();
+				}
+				else
+				{
+					storedReactions = ChemistryReagentsSO.Instance.AllChemistryReactions;
+				}
+			}
+			else
+			{
+				storedReactions = ChemistryReagentsSO.Instance.AllChemistryReactions
+					.Where(r => r.DisplayName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) || r.name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+					.ToList();
+			}
+			UpdatePage(1);
 		}
 	}
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using US13.Managers;
 using US13.UI.Core.Net;
+using US13.UI.Systems;
 using US13.UI.Systems.IngameMenu;
 
 namespace US13.UI.Core
@@ -14,7 +15,6 @@ namespace US13.UI.Core
 	/// </summary>
 	public class EscapeKeyTarget : MonoBehaviour
 	{
-
 		public NetTab NetTab;
 
 		[SerializeField]
@@ -29,6 +29,8 @@ namespace US13.UI.Core
 		/// A linked list which keeps track of all the EscapeKeyTargets so they can be closed later
 		/// </summary>
 		private static LinkedList<EscapeKeyTarget> Targets = new LinkedList<EscapeKeyTarget>();
+
+		public bool ForceUIFocusOnEnable = false;
 
 		/// <summary>
 		/// Handles escape key presses. Will close the most recently opened EscapeKeyTarget or will open the main menu if there are none.
@@ -73,12 +75,21 @@ namespace US13.UI.Core
 			// Add this object to the top of the stack so Esc will close it next
 			Loggy.Info("Adding escape key target: " + this.name, Category.UserInput);
 			Targets.AddLast(this);
+			if (ForceUIFocusOnEnable)
+			{
+				UIManager.IsInputFocus = true;
+			}
 		}
+
 		void OnDisable()
 		{
 			// Remove the escape key target
 			Loggy.Info("Removing escape key target: " + this.name, Category.UserInput);
 			Targets.Remove(this);
+			if (ForceUIFocusOnEnable)
+			{
+				UIManager.IsInputFocus = false;
+			}
 		}
 	}
 }
