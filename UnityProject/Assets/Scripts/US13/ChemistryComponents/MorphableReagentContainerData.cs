@@ -34,7 +34,7 @@ namespace US13.ChemistryComponents
 		public ContainerCustomSprite Get(int reagentNameHash)
 		{
 			var pair = spritesData.FirstOrDefault((p) =>
-					p.Key.Name.GetStableHashCode() == reagentNameHash);
+					p.Key.ReagentName.GetStableHashCode() == reagentNameHash);
 			return pair.Value;
 		}
 	}

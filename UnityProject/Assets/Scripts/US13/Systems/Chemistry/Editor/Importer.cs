@@ -123,7 +123,7 @@ namespace Chemistry.Editor
 
 				foreach (var reagent in reagentsGroup)
 				{
-					var path = Path.Combine(prefixPath, ToPascalCase(reagent.Value.Name) + ".asset");
+					var path = Path.Combine(prefixPath, ToPascalCase(reagent.Value.ReagentName) + ".asset");
 					var localPath = LocalPath(path);
 
 					if (!File.Exists(path) || overwrite)
@@ -348,7 +348,7 @@ namespace Chemistry.Editor
 
 			if (value.TryGetValue("name", out var name))
 			{
-				reagent.Name = (string) name;
+				reagent.ReagentName = (string) name;
 			}
 
 			if (value.TryGetValue("description", out var description))

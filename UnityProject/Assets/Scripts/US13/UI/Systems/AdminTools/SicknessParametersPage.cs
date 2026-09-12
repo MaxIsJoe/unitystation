@@ -33,7 +33,7 @@ namespace US13.UI.Systems.AdminTools
 
 			foreach (CureManager.CureableSickness sicknesss in CureManager.Instance.CureableSicknesses)
 			{
-				optionDatas.Add(new Dropdown.OptionData(sicknesss.Sickness.Name));
+				optionDatas.Add(new Dropdown.OptionData(sicknesss.Sickness.ReagentName));
 			}
 			sicknessDropdown.AddOptions(optionDatas);
 		}

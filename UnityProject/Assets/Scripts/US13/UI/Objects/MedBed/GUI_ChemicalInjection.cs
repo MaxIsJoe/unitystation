@@ -30,7 +30,7 @@ namespace US13.UI.Objects.MedBed
 		public void UpdateVariables()
 		{
 			CapacityText.MasterSetValue(Math.Round(ReagentReGenAndCap.CurrentReagents,1) + "u");
-			ReagentText.MasterSetValue(string.IsNullOrEmpty(ReagentReGenAndCap?.Reagent?.Name) ? "Custom" :  ReagentReGenAndCap.Reagent.Name );
+			ReagentText.MasterSetValue(string.IsNullOrEmpty(ReagentReGenAndCap?.Reagent?.ReagentName) ? "Custom" :  ReagentReGenAndCap.Reagent.ReagentName );
 			CapacitySlider.MasterSetValue( Mathf.Round(( (ReagentReGenAndCap.CurrentReagents == 0 ? 1 : ReagentReGenAndCap.CurrentReagents) /ReagentReGenAndCap.ReagentCap)*100).ToString() );
 		}
 

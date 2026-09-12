@@ -47,7 +47,7 @@ namespace Tests.Chemistry
 					continue;
 				}
 
-				newStringBuilder.AppendLine($"{reagent?.Name} is not in ChemistryReagentsSO!");
+				newStringBuilder.AppendLine($"{reagent?.ReagentName} is not in ChemistryReagentsSO!");
 			}
 
 			foreach (var reagent in AllReagents)
@@ -58,7 +58,7 @@ namespace Tests.Chemistry
 					continue;
 				}
 
-				newStringBuilder.AppendLine($"{reagent?.Name} was not found by ChemistryReagentsSOEditor!");
+				newStringBuilder.AppendLine($"{reagent?.ReagentName} was not found by ChemistryReagentsSOEditor!");
 			}
 
 			if (List.Count != count)

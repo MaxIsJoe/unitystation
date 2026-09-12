@@ -25,7 +25,7 @@ namespace US13.UI.Objects.Chemistry.ReactionsGuide.Atoms
 			{
 				var newButton = Instantiate(ReagentButtonTemplate, ReagentButtonsList.transform);
 				var buttonText = newButton.GetComponentInChildren<TMP_Text>();
-				buttonText.text = string.IsNullOrEmpty(ingredient.Name) ? ingredient.name : $"{ingredient.Name}";
+				buttonText.text = string.IsNullOrEmpty(ingredient.ReagentName) ? ingredient.name : $"{ingredient.ReagentName}";
 				var button = newButton.GetComponent<Button>();
 				button.onClick.AddListener(() => reagentDispenser.DispenseChemical(ingredient));
 			}

@@ -253,7 +253,7 @@ namespace US13.Systems.CraftingV2
 
 				if (foundAmount < requiredReagent.RequiredAmount)
 				{
-					ReasonString += $", Not enough of {requiredReagent.RequiredReagent.Name} Amount found {foundAmount} ";
+					ReasonString += $", Not enough of {requiredReagent.RequiredReagent.ReagentName} Amount found {foundAmount} ";
 					return false;
 				}
 			}

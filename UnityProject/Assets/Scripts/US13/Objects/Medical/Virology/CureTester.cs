@@ -109,7 +109,7 @@ namespace US13.Objects.Medical.Virology
 			if (itemStorage.GetIndexedItemSlot(0).ItemObject?.TryGetCachedComponent<ReagentContainer>(out var container, includeDisabled: false) == true)
 			{
 				StringBuilder machineDialogue = new StringBuilder();
-				machineDialogue.AppendLine($"Test results of cure against sickness {connectedSequenceAnalyzer.ActiveSickness.Name}: ");
+				machineDialogue.AppendLine($"Test results of cure against sickness {connectedSequenceAnalyzer.ActiveSickness.ReagentName}: ");
 				TestCure(in machineDialogue, container.CurrentReagentMix);
 				Chat.AddCommMsgByMachineToChat(gameObject, machineDialogue.ToString(), ChatChannel.Local, Loudness.NORMAL);
 			}

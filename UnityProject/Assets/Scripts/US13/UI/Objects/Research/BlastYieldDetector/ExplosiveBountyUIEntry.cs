@@ -24,7 +24,7 @@ namespace US13.UI.Objects.Research.BlastYieldDetector
 
 			foreach (ReagentBountyEntry reagent in bountyData.RequiredReagents)
 			{
-				label_text.Append($"\n\t-{reagent.RequiredReagent.Name}: {reagent.RequiredAmount}u");
+				label_text.Append($"\n\t-{reagent.RequiredReagent.ReagentName}: {reagent.RequiredAmount}u");
 			}
 
 			bountyDetails.MasterSetValue(label_text.ToString());

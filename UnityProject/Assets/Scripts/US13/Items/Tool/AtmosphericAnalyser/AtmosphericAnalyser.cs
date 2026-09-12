@@ -144,7 +144,7 @@ namespace US13.Items.Tool.AtmosphericAnalyser
 
 						if (ratio.Approx(0) == false)
 						{
-							sb.AppendLine($"{liquid.Key.Name}: {ratio:P}");
+							sb.AppendLine($"{liquid.Key.ReagentName}: {ratio:P}");
 						}
 					}
 				}

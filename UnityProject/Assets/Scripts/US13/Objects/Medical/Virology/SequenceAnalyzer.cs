@@ -96,11 +96,11 @@ namespace US13.Objects.Medical.Virology
 				if (container.CurrentReagentMix.reagents.ContainsKey(curePair.Key) == false) continue;
 				_activeSickness = curePair.Key;
 				machineDialogue.AppendLine(
-					$"Sickness {curePair.Key.Name} has been identified in the sample.\nFormulating possible cure reagents:");
+					$"Sickness {curePair.Key.ReagentName} has been identified in the sample.\nFormulating possible cure reagents:");
 				AddCluesToStringBuilder(in machineDialogue, curePair.Value);
 
 			}
-			if(_activeSickness is not null) machineDialogue.AppendLine($"Sickness {_activeSickness.Name} is registered as active disease.");
+			if(_activeSickness is not null) machineDialogue.AppendLine($"Sickness {_activeSickness.ReagentName} is registered as active disease.");
 
 			Chat.AddCommMsgByMachineToChat(gameObject,
 				_activeSickness is null ? "No sickness was identified in the provided sample." : machineDialogue.ToString(),
@@ -111,7 +111,7 @@ namespace US13.Objects.Medical.Virology
 		{
 			foreach (Reagent cureReagent in cure.ClueReagents)
 			{
-				builder.AppendLine($"- {cureReagent.Name}");
+				builder.AppendLine($"- {cureReagent.ReagentName}");
 			}
 		}
 

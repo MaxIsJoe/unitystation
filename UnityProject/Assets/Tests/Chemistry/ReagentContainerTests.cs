@@ -37,13 +37,13 @@ namespace Tests.Chemistry
 		private static IEnumerable AdditionTestData()
 		{
 			var a = ScriptableObject.CreateInstance<Reagent>();
-			a.Name = "a";
+			a.ReagentName = "a";
 			a.IndexInSingleton = 0;
 			var b = ScriptableObject.CreateInstance<Reagent>();
-			b.Name = "b";
+			b.ReagentName = "b";
 			b.IndexInSingleton = 1;
 			var c = ScriptableObject.CreateInstance<Reagent>();
-			c.Name = "c";
+			c.ReagentName = "c";
 			c.IndexInSingleton = 2;
 
 			//Test adding without overflow
@@ -129,13 +129,13 @@ namespace Tests.Chemistry
 		private static IEnumerable RemovalTestData()
 		{
 			var a = ScriptableObject.CreateInstance<Reagent>();
-			a.Name = "a";
+			a.ReagentName = "a";
 			a.IndexInSingleton = 0;
 			var b = ScriptableObject.CreateInstance<Reagent>();
-			b.Name = "b";
+			b.ReagentName = "b";
 			b.IndexInSingleton = 1;
 			var c = ScriptableObject.CreateInstance<Reagent>();
-			c.Name = "c";
+			c.ReagentName = "c";
 			c.IndexInSingleton = 2;
 
 			yield return new object[]

@@ -66,7 +66,7 @@ namespace Chemistry
 #endif
 		}
 
-		public string Name
+		public string ReagentName
 		{
 			get => displayName ?? name;
 			set => displayName = value;
@@ -79,7 +79,7 @@ namespace Chemistry
 
 		public override string ToString()
 		{
-			return Name;
+			return ReagentName;
 		}
 
 		public bool Equals(Reagent other)

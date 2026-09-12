@@ -249,7 +249,7 @@ namespace Chemistry
 		{
 			get
 			{
-				return MajorMixReagent.Name;
+				return MajorMixReagent.ReagentName;
 			}
 		}
 
@@ -751,7 +751,7 @@ namespace Chemistry
 					}
 					else
 					{
-						Loggy.Error($"An error occured while trying to get {reagent.Name} from {MixName}.\n {e}");
+						Loggy.Error($"An error occured while trying to get {reagent.ReagentName} from {MixName}.\n {e}");
 						return 0;
 					}
 				}

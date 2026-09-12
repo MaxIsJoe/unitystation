@@ -212,7 +212,7 @@ namespace US13.Clothing.Eyewear
 			foreach (var cure in CureManager.Instance.CureableSicknesses)
 			{
 				if (blood.reagents.TryGetValue(cure.Sickness, out float amount) == false) continue;
-				if (CommonSicknesses.Instance.diseaseReactionDictionary.TryGetValue(cure.Sickness.Name, out var reaction) == false) continue;
+				if (CommonSicknesses.Instance.diseaseReactionDictionary.TryGetValue(cure.Sickness.ReagentName, out var reaction) == false) continue;
 
 				float concentrationPercent = (amount / system.NormalBlood) * 100;
 				int newStage = reaction.GetStageID(concentrationPercent);

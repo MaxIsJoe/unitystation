@@ -57,7 +57,7 @@ namespace US13.ChemistryComponents
 			if (newMajorReagent != majorReagent)
 			{
 				// get major reagent name
-				var majorReagentName = newMajorReagent ? newMajorReagent.Name : "";
+				var majorReagentName = newMajorReagent ? newMajorReagent.ReagentName : "";
 
 				// now send it to all clients as string hash
 				majorReagentNameHash = majorReagentName.GetStableHashCode();

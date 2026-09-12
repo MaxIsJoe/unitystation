@@ -134,7 +134,7 @@ namespace US13.UI.Objects.Medical
 				var reagentList = BoozeDispenser.Container;
 				foreach (var reagent in reagentList)
 				{
-					newListOfReagents.AppendLine($"{char.ToUpper(reagent.Key.Name[0])}{reagent.Key.Name.Substring(1)}");
+					newListOfReagents.AppendLine($"{char.ToUpper(reagent.Key.ReagentName[0])}{reagent.Key.ReagentName.Substring(1)}");
 					newQuantityList.AppendLine($"{Math.Round(reagent.Value,1)}u");
 				}
 				Total.MasterSetValue($"{BoozeDispenser.Container.Total}/{BoozeDispenser.Container.MaxCapacity} Units");

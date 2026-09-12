@@ -24,11 +24,11 @@ namespace Tests.Chemistry
 		private static IEnumerable ReactionTestData()
 		{
 			var a = ScriptableObject.CreateInstance<Reagent>();
-			a.Name = nameof(a);
+			a.ReagentName = nameof(a);
 			var b = ScriptableObject.CreateInstance<Reagent>();
-			b.Name = nameof(b);
+			b.ReagentName = nameof(b);
 			var c = ScriptableObject.CreateInstance<Reagent>();
-			c.Name = nameof(c);
+			c.ReagentName = nameof(c);
 
 			var simpleReaction = ScriptableObject.CreateInstance<Reaction>();
 			simpleReaction.ingredients = new SerializableDictionary<Reagent, int> {[a] = 1, [b] = 1};

@@ -31,7 +31,7 @@ namespace US13.UI.Objects.Medical
 			reagent = newReagent;
 			reagentAmount = amount;
 			chemMasterTab = tab;
-			reagentName.MasterSetValue(reagent.Name);
+			reagentName.MasterSetValue(reagent.ReagentName);
 			reagentAmountDisplay.MasterSetValue($"{reagentAmount:F2}u");
 		}
 		public void OpenCustomPrompt()

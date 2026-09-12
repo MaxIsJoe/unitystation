@@ -176,7 +176,7 @@ namespace US13.UI.Objects.Medical
 
 		public void Analyze(Reagent reagent, PlayerInfo player)
 		{
-			Chat.AddExamineMsg(player.GameObject, $"This is {reagent.Name}. {reagent.description}");
+			Chat.AddExamineMsg(player.GameObject, $"This is {reagent.ReagentName}. {reagent.description}");
 		}
 		#endregion
 
@@ -380,7 +380,7 @@ namespace US13.UI.Objects.Medical
 				StringBuilder amountsListStr = new StringBuilder();
 				foreach (Reagent reagent in tempMix.reagents.Keys)
 				{
-					reagentListStr.Append($"{reagent.Name}\n");
+					reagentListStr.Append($"{reagent.ReagentName}\n");
 					amountsListStr.Append($"{tempMix.reagents[reagent]}u\n");
 				}
 				productReagentList.MasterSetValue(reagentListStr.ToString());

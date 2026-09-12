@@ -353,7 +353,7 @@ namespace US13.Systems.CraftingV2.GUI
 					.Append("- ")
 					.Append(ingredientReagent.RequiredAmount)
 					.Append("u ")
-					.Append(ingredientReagent.RequiredReagent.Name)
+					.Append(ingredientReagent.RequiredReagent.ReagentName)
 					.AppendLine()
 					.AppendLine();
 			}

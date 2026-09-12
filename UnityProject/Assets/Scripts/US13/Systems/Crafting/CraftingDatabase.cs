@@ -42,7 +42,7 @@ namespace US13.Systems.Crafting
 		{
 			foreach (GrinderRecipe recipe in grinderRecipeList)
 			{
-				if (recipe.Output.Name == reagentName)
+				if (recipe.Output.ReagentName == reagentName)
 				{
 					return recipe.Output;
 				}
