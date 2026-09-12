@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Chemistry;
 using UnityEngine;
+using US13.Core.Modular;
 using US13.Managers;
 using US13.Objects.Chemistry;
 using US13.Objects.Engineering;
@@ -12,7 +13,7 @@ using US13.UI.Core.Net.Elements;
 
 namespace US13.UI.Objects.Medical
 {
-	public class GUI_BoozeDispenser : NetTab
+	public class GUI_BoozeDispenser : NetTab, IReagentDispenser
 	{
 		[NonSerialized]
 		public int DispensedNumber = 20;
