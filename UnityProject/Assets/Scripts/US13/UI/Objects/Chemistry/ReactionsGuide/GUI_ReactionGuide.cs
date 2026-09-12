@@ -8,6 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using US13.Core.Modular;
+using US13.Managers.NetworkManagement;
 using US13.ScriptableObjects;
 using US13.UI.Objects.Chemistry.ReactionsGuide.Atoms;
 using Util;
@@ -52,6 +53,7 @@ namespace US13.UI.Objects.Chemistry.ReactionsGuide
 
 		private void Awake()
 		{
+			if (CustomNetworkManager.IsHeadless) return;
 			if (GrabAllReactionsFromParent() == false || CheckNothingIsMissing() == false)
 			{
 				Loggy.Error("GUI_ReactionGuide is missing required components. Please check the inspector.");
