@@ -7658,7 +7658,7 @@ MonoBehaviour:
   OnEscapeKey:
     m_PersistentCalls:
       m_Calls: []
-  DisableOnEscape: 0
+  DisableOnEscape: 1
   ForceUIFocusOnEnable: 1
 --- !u!1 &1578125989792486
 GameObject:
@@ -16009,6 +16009,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7175250015561912377, guid: f2f97c13483d1954db88bc4d426d9493,
+        type: 3}
+      propertyPath: DisplayAllReactions
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7175250015561912377, guid: f2f97c13483d1954db88bc4d426d9493,
         type: 3}
