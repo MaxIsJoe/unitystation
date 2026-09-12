@@ -263,6 +263,16 @@ namespace Chemistry
 			return true;
 		}
 
+		public Color GetReactionColor()
+		{
+			Color color = Color.antiqueWhite;
+			foreach (var result in results.m_dict)
+			{
+				color += result.Key.color * result.Value;
+			}
+			color /= results.m_dict.Count;
+			return color;
+		}
 	}
 
 	public struct CachedEffect

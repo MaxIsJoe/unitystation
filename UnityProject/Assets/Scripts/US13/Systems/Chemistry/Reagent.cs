@@ -19,7 +19,7 @@ namespace Chemistry
 	{
 		[SerializeField]
 		[Tooltip("This is optional")]
-		string displayName;
+		public string displayName;
 		[TextArea]
 		public string description;
 		public Color color;

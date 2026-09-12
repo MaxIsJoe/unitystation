@@ -92,6 +92,39 @@ namespace US13.ScriptableObjects
 				Loggy.Error(e.ToString());
 			}
 		}
+
+		public List<Reaction> FindAllReactionsThatUseReagentInIngredients(Reagent reagent)
+		{
+			var reactions = new List<Reaction>();
+			foreach (var reaction in allChemistryReactions)
+			{
+				if (!reaction) continue;
+				if (reaction.ingredients.ContainsKey(reagent))
+				{
+					reactions.Add(reaction);
+				}
+			}
+			return reactions;
+		}
+
+		public List<Reaction> FindAllReactionsThatUseReagentInIngredients(string reagent)
+		{
+			var reactions = new List<Reaction>();
+			foreach (var reaction in allChemistryReactions)
+			{
+				if (!reaction) continue;
+				foreach (var ingredient in reaction.ingredients.Keys)
+				{
+					if (!ingredient) continue;
+					if (ingredient.name.Equals(reagent, StringComparison.OrdinalIgnoreCase))
+					{
+						reactions.Add(reaction);
+						break;
+					}
+				}
+			}
+			return reactions;
+		}
 	}
 
 #if UNITY_EDITOR

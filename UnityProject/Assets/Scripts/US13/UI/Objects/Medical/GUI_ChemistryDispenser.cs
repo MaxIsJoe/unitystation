@@ -3,6 +3,7 @@ using System.Linq;
 using Chemistry;
 using Logs;
 using UnityEngine;
+using US13.Core.Modular;
 using US13.Managers;
 using US13.Objects.Chemistry;
 using US13.Objects.Engineering;
@@ -11,7 +12,7 @@ using US13.UI.Core.Net.Elements;
 
 namespace US13.UI.Objects.Medical
 {
-	public class GUI_ChemistryDispenser : NetTab
+	public class GUI_ChemistryDispenser : NetTab, IReagentDispenser
 	{
 		public int DispensedNumber = 20;
 
@@ -82,9 +83,7 @@ namespace US13.UI.Objects.Medical
 		{
 			if (ChemistryDispenser.Container != null)
 			{
-				if (ChemistryDispenser.ThisState == PowerState.On
-					|| ChemistryDispenser.ThisState == PowerState.LowVoltage
-					|| ChemistryDispenser.ThisState == PowerState.OverVoltage)
+				if (ChemistryDispenser.ThisState is PowerState.On or PowerState.LowVoltage or PowerState.OverVoltage)
 				{
 					if (dispensableReagents.Contains(reagent)) // Checks if the the dispenser can dispense this chemical
 					{
