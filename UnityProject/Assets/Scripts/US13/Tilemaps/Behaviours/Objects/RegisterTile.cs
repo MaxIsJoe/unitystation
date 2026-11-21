@@ -940,6 +940,8 @@ namespace US13.Tilemaps.Behaviours.Objects
 		{
 			if (Manager3D.Is3D) return;
 			if (CurrentsortingGroup == null) return;
+			// Tile reordering also visits objects whose order has not changed.
+			if (CurrentsortingGroup.sortingOrder == newLayerId) return;
 			CurrentsortingGroup.sortingOrder = newLayerId;
 		}
 
@@ -947,7 +949,11 @@ namespace US13.Tilemaps.Behaviours.Objects
 		{
 			if (Manager3D.Is3D) return;
 			if (CurrentsortingGroup == null) return;
-			CurrentsortingGroup.sortingLayerID = newLayerId;
+			if (CurrentsortingGroup.sortingLayerID != newLayerId)
+			{
+				CurrentsortingGroup.sortingLayerID = newLayerId;
+			}
+			// A caller can request an order refresh even when the layer is unchanged.
 			if (BoolReorderSorting)
 			{
 				ReorderSorting();

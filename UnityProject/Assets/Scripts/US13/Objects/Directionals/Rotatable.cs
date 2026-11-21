@@ -326,12 +326,12 @@ namespace US13.Objects.Directionals
 
 			if (SortingGroup != null)
 			{
-				if (SetOrder)
+				if (SetOrder && SortingGroup.sortingOrder != Orders[spriteVariant])
 				{
 					SortingGroup.sortingOrder = Orders[spriteVariant];
 				}
 
-				if (SetLayer)
+				if (SetLayer && SortingGroup.sortingLayerName != Layers[spriteVariant])
 				{
 					SortingGroup.sortingLayerName = Layers[spriteVariant];
 				}
